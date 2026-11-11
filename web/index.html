@@ -4,49 +4,393 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>国际机票价格监控</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
 <style>
-  body { font-family: -apple-system, "PingFang SC", sans-serif; max-width: 640px;
-         margin: 0 auto; padding: 16px; color: #222; }
-  h1 { font-size: 1.3rem; }
-  .route { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin: 10px 0; }
-  .route b { font-size: 1.05rem; }
-  .muted { color: #888; font-size: 0.9rem; }
-  footer { margin-top: 24px; color: #888; font-size: 0.85rem; }
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    max-width: 760px; margin: 0 auto; padding: 12px 12px 90px;
+    color: #1a1a1a; background: #fafafa;
+  }
+  h1 { font-size: 1.25rem; margin: 4px 0 12px; }
+  select, input[type="date"] {
+    font-size: 1rem; padding: 8px 10px; border-radius: 8px;
+    border: 1px solid #ccc; background: #fff;
+  }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
+  .tabs { display: flex; gap: 6px; margin-bottom: 10px; }
+  .tabs button {
+    flex: 1; background: #eee; border: none; padding: 10px; border-radius: 8px;
+    font-weight: 600; color: #555; font-size: 0.95rem;
+  }
+  .tabs button.active { background: #2b6cff; color: #fff; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .chart { width: 100%; height: 380px; }
+  .airlines { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+  .airlines label {
+    font-size: 0.85rem; background: #fff; border: 1px solid #ddd;
+    border-radius: 14px; padding: 4px 10px; display: inline-flex;
+    align-items: center; gap: 4px; user-select: none;
+  }
+  .muted { color: #888; font-size: 0.85rem; }
+  .note {
+    background: #fff8e1; border: 1px solid #ffe1a8; border-radius: 8px;
+    padding: 10px 12px; font-size: 0.9rem; margin-top: 8px;
+  }
+  .hidden { display: none !important; }
+  .click-panel {
+    position: fixed; left: 0; right: 0; bottom: 0; max-width: 760px; margin: 0 auto;
+    background: #fff; border-top: 1px solid #ddd; padding: 14px;
+    box-shadow: 0 -4px 14px rgba(0,0,0,.08); transform: translateY(100%);
+    transition: transform .15s ease-out;
+  }
+  .click-panel.show { transform: translateY(0); }
+  .click-panel .actions { display: flex; gap: 8px; margin-top: 10px; }
+  .click-panel button {
+    flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #ccc; background: #fff;
+    font-size: 0.9rem;
+  }
+  .click-panel button.primary { background: #2b6cff; color: #fff; border-color: #2b6cff; }
+  footer { margin: 20px 0 10px; color: #888; font-size: 0.8rem; text-align: center; }
 </style>
 </head>
 <body>
 <h1>国际机票价格监控</h1>
-<p class="muted">Phase 3 占位页面：验证 GitHub Actions 定时采集 + Pages 部署链路。
-真正的视图 A / 视图 B 图表会在 Phase 4 替换这里。</p>
-<div id="routes">加载中…</div>
-<footer>
-  数据来源：Aviasales / Travelpayouts（缓存价，非实时，下单前请在官网确认）
-</footer>
+
+<div class="row">
+  <select id="routeSelect"></select>
+</div>
+
+<div class="tabs">
+  <button id="tabA" class="active">视图 A · 未来价格</button>
+  <button id="tabB">视图 B · 历史价格</button>
+</div>
+
+<div id="panelA" class="panel active">
+  <div class="muted" id="rangeA"></div>
+  <div class="airlines" id="airlinesA"></div>
+  <div class="chart" id="chartA"></div>
+  <div class="muted">点图上的点可以去订票，或者看这一天的历史价格走势</div>
+</div>
+
+<div id="panelB" class="panel">
+  <div class="row">
+    <label class="muted">出发日期</label>
+    <input type="date" id="depInput">
+  </div>
+  <div id="noHistoryB" class="note hidden"></div>
+  <div class="airlines" id="airlinesB"></div>
+  <div class="chart" id="chartB"></div>
+</div>
+
+<div id="emptyState" class="note hidden"></div>
+
+<footer>数据来源：Aviasales / Travelpayouts（缓存价，非实时，下单前请在航司官网确认）</footer>
+
+<div class="click-panel" id="clickPanel">
+  <div id="clickInfo"></div>
+  <div class="actions">
+    <button id="clickBook" class="primary">去订票</button>
+    <button id="clickHistory">看这天的历史价格</button>
+    <button id="clickClose">关闭</button>
+  </div>
+</div>
+
 <script>
-async function main() {
-  const el = document.getElementById("routes");
-  try {
-    const res = await fetch("data/index.json", { cache: "no-store" });
-    if (!res.ok) throw new Error("data/index.json not found yet");
-    const idx = await res.json();
-    el.innerHTML = `<p class="muted">index 生成时间：${idx.generated_at}</p>` +
-      idx.routes.map(r => `
-        <div class="route">
-          <b>${r.origin} → ${r.destination}</b> (${r.id})
-          <div class="muted">
-            监控区间 ${r.date_from} ~ ${r.date_to} ·
-            上限 ${r.max_price}€ ·
-            ${r.enabled ? "启用中" : "已停用"}
-          </div>
-          <div class="muted">已有 ${r.snapshot_dates.length} 天快照
-            ${r.snapshot_dates.length ? `(最新：${r.snapshot_dates[r.snapshot_dates.length - 1]})` : ""}
-          </div>
-        </div>
-      `).join("");
-  } catch (e) {
-    el.innerHTML = `<p class="muted">还没有数据（${e.message}）。等每日采集任务第一次运行后这里会显示关注列表。</p>`;
+const routeSelect = document.getElementById("routeSelect");
+const depInput = document.getElementById("depInput");
+const tabA = document.getElementById("tabA");
+const tabB = document.getElementById("tabB");
+const panelA = document.getElementById("panelA");
+const panelB = document.getElementById("panelB");
+const clickPanel = document.getElementById("clickPanel");
+const emptyState = document.getElementById("emptyState");
+
+let routes = [];
+let currentRoute = null;
+let currentSnapshot = null;
+let currentHistory = null;
+let chartA = null;
+let chartB = null;
+
+function dateRange(fromISO, toISO) {
+  const out = [];
+  let d = new Date(fromISO + "T00:00:00Z");
+  const end = new Date(toISO + "T00:00:00Z");
+  while (d <= end) {
+    out.push(d.toISOString().slice(0, 10));
+    d.setUTCDate(d.getUTCDate() + 1);
   }
+  return out;
 }
+
+function topAirlines(dates, priceOf, limit = 5) {
+  const best = {};
+  for (const d of dates) {
+    const byAirline = priceOf(d);
+    if (!byAirline) continue;
+    for (const [airline, price] of Object.entries(byAirline)) {
+      if (best[airline] === undefined || price < best[airline]) best[airline] = price;
+    }
+  }
+  return Object.entries(best)
+    .sort((a, b) => a[1] - b[1])
+    .map(([airline]) => airline)
+    .slice(0, limit);
+}
+
+// Renders a multi-airline line chart + bold daily-min line into `el`.
+// byAirlineAt(date) -> {airline: price} | undefined ; minAt(date) -> {price, airline, flight_number, transfers, link} | undefined
+function renderChart(chart, airlinesEl, dates, byAirlineAt, minAt, allAirlines, defaultOn) {
+  airlinesEl.innerHTML = "";
+  const checked = new Set(defaultOn);
+  const checkboxes = {};
+  allAirlines.forEach(airline => {
+    const label = document.createElement("label");
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.checked = checked.has(airline);
+    cb.addEventListener("change", () => draw());
+    checkboxes[airline] = cb;
+    label.appendChild(cb);
+    label.append(" " + airline);
+    airlinesEl.appendChild(label);
+  });
+
+  function draw() {
+    const activeAirlines = allAirlines.filter(a => checkboxes[a].checked);
+    const series = activeAirlines.map(airline => ({
+      name: airline,
+      type: "line",
+      connectNulls: false,
+      symbolSize: 5,
+      data: dates.map(d => {
+        const byAirline = byAirlineAt(d);
+        return byAirline && byAirline[airline] !== undefined ? byAirline[airline] : null;
+      }),
+    }));
+    series.push({
+      name: "每日最低价",
+      type: "line",
+      connectNulls: false,
+      symbolSize: 7,
+      lineStyle: { width: 4, color: "#222" },
+      itemStyle: { color: "#222" },
+      z: 10,
+      data: dates.map(d => {
+        const info = minAt(d);
+        return info ? info.price : null;
+      }),
+    });
+
+    chart.setOption({
+      tooltip: {
+        trigger: "axis",
+        formatter: (params) => {
+          if (!params.length) return "";
+          const date = params[0].axisValue;
+          const info = minAt(date);
+          let html = `<b>${date}</b>`;
+          if (info) {
+            html += `<br/>最低价 ${info.price}€ ${info.airline || ""}${info.flight_number || ""}`
+                  + (info.transfers !== undefined ? ` 转机${info.transfers}次` : "");
+          }
+          for (const p of params) {
+            if (p.value !== null && p.value !== undefined) {
+              html += `<br/>${p.seriesName}: ${p.value}€`;
+            }
+          }
+          return html;
+        },
+      },
+      legend: { type: "scroll", top: 0 },
+      grid: { left: 50, right: 20, top: 36, bottom: 60 },
+      xAxis: { type: "category", data: dates, axisLabel: { rotate: 45 } },
+      yAxis: { type: "value", name: "€", scale: true },
+      dataZoom: [{ type: "inside" }, { type: "slider", height: 16, bottom: 32 }],
+      series,
+    }, true);
+  }
+  draw();
+}
+
+function renderViewA() {
+  const rangeEl = document.getElementById("rangeA");
+  const chartEl = document.getElementById("chartA");
+  rangeEl.textContent = `监控区间 ${currentRoute.date_from} ~ ${currentRoute.date_to}`
+    + ` · 价格上限 ${currentRoute.max_price}€`;
+
+  if (!currentSnapshot) {
+    chartEl.innerHTML = "<p class='muted'>还没有快照数据。</p>";
+    return;
+  }
+  const dates = dateRange(currentRoute.date_from, currentRoute.date_to);
+  const byAirlineAt = (d) => {
+    const day = currentSnapshot.dates[d];
+    if (!day) return undefined;
+    const out = {};
+    for (const [airline, info] of Object.entries(day.by_airline)) out[airline] = info.price;
+    return out;
+  };
+  const minAt = (d) => (currentSnapshot.dates[d] || {}).min;
+  const allAirlines = [...new Set(dates.flatMap(d => Object.keys(byAirlineAt(d) || {})))].sort();
+  const defaultOn = topAirlines(dates, byAirlineAt);
+
+  if (!chartA) chartA = echarts.init(chartEl);
+  renderChart(chartA, document.getElementById("airlinesA"), dates, byAirlineAt, minAt,
+              allAirlines, defaultOn);
+  bindDateClick(chartA, dates, (date) => {
+    const info = minAt(date);
+    if (info) showClickPanel(date, info);
+  });
+}
+
+// echarts' own `click` series event only fires on an exact hit (a point
+// symbol or line stroke), which is unreliable on touch screens. Reading the
+// pixel position against the grid's own coordinate system instead lets a
+// tap anywhere in that date's column resolve to the right category.
+function bindDateClick(chart, dates, onDate) {
+  chart.getZr().off("click");
+  chart.getZr().on("click", (event) => {
+    const pixel = [event.offsetX, event.offsetY];
+    if (!chart.containPixel("grid", pixel)) return;
+    const idx = Math.round(chart.convertFromPixel({ seriesIndex: 0 }, pixel)[0]);
+    const date = dates[idx];
+    if (date) onDate(date);
+  });
+}
+
+function renderViewB() {
+  const noHistoryEl = document.getElementById("noHistoryB");
+  const chartEl = document.getElementById("chartB");
+  const airlinesEl = document.getElementById("airlinesB");
+  const dep = depInput.value;
+  const byQuery = currentHistory && currentHistory.departures
+    ? currentHistory.departures[dep] : null;
+
+  if (!byQuery || Object.keys(byQuery).length === 0) {
+    const started = currentRoute.snapshot_dates[0];
+    noHistoryEl.textContent = started
+      ? `这条航线从 ${started} 开始记录，${dep} 这天的历史数据还在积累中。`
+      : `这条航线还没有任何快照数据，历史数据还在积累中。`;
+    noHistoryEl.classList.remove("hidden");
+    chartEl.classList.add("hidden");
+    airlinesEl.innerHTML = "";
+    return;
+  }
+  noHistoryEl.classList.add("hidden");
+  chartEl.classList.remove("hidden");
+
+  const queryDates = currentRoute.snapshot_dates.length
+    ? dateRange(currentRoute.snapshot_dates[0],
+                currentRoute.snapshot_dates[currentRoute.snapshot_dates.length - 1])
+    : [];
+  const byAirlineAt = (d) => byQuery[d];
+  const minAt = (d) => {
+    const prices = byQuery[d];
+    if (!prices) return undefined;
+    let bestAirline = null, bestPrice = Infinity;
+    for (const [airline, price] of Object.entries(prices)) {
+      if (price < bestPrice) { bestPrice = price; bestAirline = airline; }
+    }
+    return bestAirline ? { price: bestPrice, airline: bestAirline } : undefined;
+  };
+  const allAirlines = [...new Set(queryDates.flatMap(d => Object.keys(byAirlineAt(d) || {})))].sort();
+  const defaultOn = topAirlines(queryDates, byAirlineAt);
+
+  if (!chartB) chartB = echarts.init(chartEl);
+  renderChart(chartB, airlinesEl, queryDates, byAirlineAt, minAt, allAirlines, defaultOn);
+}
+
+function showClickPanel(date, info) {
+  document.getElementById("clickInfo").innerHTML =
+    `<b>${currentRoute.origin} → ${currentRoute.destination}</b> · 去程 ${date}`
+    + `<br>最低价 ${info.price}€ ${info.airline || ""}${info.flight_number || ""}`
+    + (info.transfers !== undefined ? ` 转机${info.transfers}次` : "")
+    + `<div class="muted">缓存价，下单前请在航司官网确认</div>`;
+  document.getElementById("clickBook").onclick = () => {
+    if (info.link) window.open("https://www.aviasales.com" + info.link, "_blank");
+  };
+  document.getElementById("clickHistory").onclick = () => {
+    depInput.value = date;
+    switchTab("B");
+    renderViewB();
+    clickPanel.classList.remove("show");
+  };
+  clickPanel.classList.add("show");
+}
+document.getElementById("clickClose").onclick = () => clickPanel.classList.remove("show");
+
+function switchTab(which) {
+  tabA.classList.toggle("active", which === "A");
+  tabB.classList.toggle("active", which === "B");
+  panelA.classList.toggle("active", which === "A");
+  panelB.classList.toggle("active", which === "B");
+  if (which === "A" && chartA) chartA.resize();
+  if (which === "B" && chartB) chartB.resize();
+}
+tabA.addEventListener("click", () => switchTab("A"));
+tabB.addEventListener("click", () => switchTab("B"));
+
+async function loadRoute(routeId) {
+  currentRoute = routes.find(r => r.id === routeId);
+  if (!currentRoute) return;
+
+  currentSnapshot = null;
+  if (currentRoute.snapshot_dates.length) {
+    const latest = currentRoute.snapshot_dates[currentRoute.snapshot_dates.length - 1];
+    try {
+      currentSnapshot = await fetch(`data/snapshots/${routeId}/${latest}.json`,
+                                     { cache: "no-store" }).then(r => r.json());
+    } catch (e) { console.error(e); }
+  }
+  try {
+    currentHistory = await fetch(`data/history/${routeId}.json`,
+                                  { cache: "no-store" }).then(r => r.json());
+  } catch (e) {
+    currentHistory = { departures: {} };
+  }
+
+  depInput.min = currentRoute.date_from;
+  depInput.max = currentRoute.date_to;
+  const depsWithData = Object.keys(currentHistory.departures || {}).sort();
+  depInput.value = depsWithData[0] || currentRoute.date_from;
+
+  renderViewA();
+  renderViewB();
+}
+depInput.addEventListener("change", renderViewB);
+routeSelect.addEventListener("change", () => loadRoute(routeSelect.value));
+
+async function main() {
+  let index;
+  try {
+    index = await fetch("data/index.json", { cache: "no-store" }).then(r => {
+      if (!r.ok) throw new Error("no data yet");
+      return r.json();
+    });
+  } catch (e) {
+    emptyState.textContent = "还没有数据。等每日采集任务第一次运行后这里会显示关注列表。";
+    emptyState.classList.remove("hidden");
+    return;
+  }
+  routes = index.routes || [];
+  if (!routes.length) {
+    emptyState.textContent = "关注列表是空的，还没有监控任何航线。";
+    emptyState.classList.remove("hidden");
+    return;
+  }
+  routes.forEach(r => {
+    const opt = document.createElement("option");
+    opt.value = r.id;
+    opt.textContent = `${r.origin} → ${r.destination} (${r.id})`;
+    routeSelect.appendChild(opt);
+  });
+  await loadRoute(routes[0].id);
+}
+window.addEventListener("resize", () => { chartA && chartA.resize(); chartB && chartB.resize(); });
 main();
 </script>
 </body>
