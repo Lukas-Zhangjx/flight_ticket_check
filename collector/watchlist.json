@@ -1,0 +1,24 @@
+[
+  {
+    "id": "MUC-SHA",
+    "origin": "MUC",
+    "destination": "SHA",
+    "date_from": "2027-01-01",
+    "date_to": "2027-03-31",
+    "max_price": 450,
+    "airlines": [],
+    "enabled": true,
+    "created_at": "2026-11-11"
+  },
+  {
+    "id": "SHA-MUC",
+    "origin": "SHA",
+    "destination": "MUC",
+    "date_from": "2027-01-15",
+    "date_to": "2027-04-15",
+    "max_price": 450,
+    "airlines": [],
+    "enabled": true,
+    "created_at": "2026-11-11"
+  }
+]
