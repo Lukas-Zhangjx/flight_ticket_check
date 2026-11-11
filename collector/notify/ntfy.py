@@ -12,9 +12,10 @@ UA = {"User-Agent": "personal-flight-watch/1.0", "Content-Type": "application/js
 
 class NtfyChannel(NotifyChannel):
     def __init__(self, topic=None, server=None, timeout=30):
-        self.topic = topic if topic is not None else os.getenv("NTFY_TOPIC")
-        self.server = (server if server is not None
-                       else os.getenv("NTFY_SERVER", "https://ntfy.sh")).rstrip("/")
+        # `or` (not a None-check) because GitHub Actions passes an unset
+        # secret through as an empty string, not an absent env var.
+        self.topic = topic or os.getenv("NTFY_TOPIC") or ""
+        self.server = (server or os.getenv("NTFY_SERVER") or "https://ntfy.sh").rstrip("/")
         self.timeout = timeout
 
     def is_configured(self):

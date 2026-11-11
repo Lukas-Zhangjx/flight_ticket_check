@@ -34,7 +34,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/
+          # -f: data/ is gitignored so local dry-run output never gets
+          # committed by accident, but this workflow's output is real and
+          # must be force-added past that same rule.
+          git add -f data/
           if git diff --cached --quiet; then
             echo "no data changes"
           else
