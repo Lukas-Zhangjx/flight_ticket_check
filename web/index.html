@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>国际机票价格监控</title>
+<style>
+  body { font-family: -apple-system, "PingFang SC", sans-serif; max-width: 640px;
+         margin: 0 auto; padding: 16px; color: #222; }
+  h1 { font-size: 1.3rem; }
+  .route { border: 1px solid #ddd; border-radius: 8px; padding: 12px; margin: 10px 0; }
+  .route b { font-size: 1.05rem; }
+  .muted { color: #888; font-size: 0.9rem; }
+  footer { margin-top: 24px; color: #888; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<h1>国际机票价格监控</h1>
+<p class="muted">Phase 3 占位页面：验证 GitHub Actions 定时采集 + Pages 部署链路。
+真正的视图 A / 视图 B 图表会在 Phase 4 替换这里。</p>
+<div id="routes">加载中…</div>
+<footer>
+  数据来源：Aviasales / Travelpayouts（缓存价，非实时，下单前请在官网确认）
+</footer>
+<script>
+async function main() {
+  const el = document.getElementById("routes");
+  try {
+    const res = await fetch("data/index.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("data/index.json not found yet");
+    const idx = await res.json();
+    el.innerHTML = `<p class="muted">index 生成时间：${idx.generated_at}</p>` +
+      idx.routes.map(r => `
+        <div class="route">
+          <b>${r.origin} → ${r.destination}</b> (${r.id})
+          <div class="muted">
+            监控区间 ${r.date_from} ~ ${r.date_to} ·
+            上限 ${r.max_price}€ ·
+            ${r.enabled ? "启用中" : "已停用"}
+          </div>
+          <div class="muted">已有 ${r.snapshot_dates.length} 天快照
+            ${r.snapshot_dates.length ? `(最新：${r.snapshot_dates[r.snapshot_dates.length - 1]})` : ""}
+          </div>
+        </div>
+      `).join("");
+  } catch (e) {
+    el.innerHTML = `<p class="muted">还没有数据（${e.message}）。等每日采集任务第一次运行后这里会显示关注列表。</p>`;
+  }
+}
+main();
+</script>
+</body>
+</html>
