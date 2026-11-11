@@ -9,3 +9,6 @@ node_modules/
 # data/ is populated by the daily GitHub Actions collector run (Phase 3+);
 # local/dry-run output stays out of the repo so it's never mistaken for real prices
 /data/
+worker/.dev.vars
+worker/node_modules/
+worker/.wrangler/

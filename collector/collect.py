@@ -16,6 +16,9 @@ Env vars:
   NTFY_SERVER  optional, default https://ntfy.sh
   RSS_FEEDS    comma-separated RSS URLs (optional, has a default)
   KEYWORDS     regex for RSS filtering (optional, has a default)
+  WORKER_URL   Cloudflare Worker base URL (optional; with ACCESS_KEY, reads
+               the watchlist from the Worker's KV instead of --watchlist)
+  ACCESS_KEY   access key for WORKER_URL (SPEC.md section 5/6)
 """
 
 import argparse
@@ -35,6 +38,7 @@ from fake_data import fake_entries_for_route
 from notify import notify
 from rss import check_rss
 from tp_client import TravelpayoutsClient, TravelpayoutsError
+from worker_client import get_watchlist
 
 DEFAULT_WATCHLIST = Path(__file__).with_name("watchlist.json")
 DEFAULT_DATA_DIR = Path(__file__).parent.parent / "data"
@@ -44,6 +48,11 @@ DEFAULT_KEYWORDS = r"shanghai|schanghai|china|上海|PVG"
 
 
 def load_watchlist(path):
+    worker_url = os.getenv("WORKER_URL")
+    access_key = os.getenv("ACCESS_KEY")
+    if worker_url and access_key:
+        print(f"loading watchlist from Worker ({worker_url})")
+        return get_watchlist(worker_url, access_key)
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
