@@ -28,6 +28,10 @@ jobs:
           TP_TOKEN: ${{ secrets.TP_TOKEN }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           NTFY_SERVER: ${{ secrets.NTFY_SERVER }}
+          # Phase 5: once both are set, the collector reads its watchlist
+          # from the Worker's KV instead of collector/watchlist.json.
+          WORKER_URL: ${{ secrets.WORKER_URL }}
+          ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
         run: python3 collector/collect.py
 
       - name: Commit data changes

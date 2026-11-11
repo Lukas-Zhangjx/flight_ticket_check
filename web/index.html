@@ -61,6 +61,14 @@
 
 <div class="row">
   <select id="routeSelect"></select>
+  <button id="settingsBtn" title="Worker 设置">⚙ 设置</button>
+</div>
+<div id="settingsPanel" class="note hidden">
+  <div class="row">
+    <label class="muted" style="flex-basis:100%">Worker 访问口令（不填则视图A只读本地快照，不实时查询）</label>
+    <input type="password" id="accessKeyInput" placeholder="X-Access-Key" style="flex:1">
+    <button id="saveAccessKey">保存</button>
+  </div>
 </div>
 
 <div class="tabs">
@@ -100,7 +108,46 @@
 
 <script>
 const routeSelect = document.getElementById("routeSelect");
+const settingsBtn = document.getElementById("settingsBtn");
+const settingsPanel = document.getElementById("settingsPanel");
+const accessKeyInput = document.getElementById("accessKeyInput");
 const depInput = document.getElementById("depInput");
+
+// SPEC.md section 3: Worker URL isn't sensitive (it's just an endpoint),
+// only the access key is - that one lives in localStorage, never in the repo.
+const WORKER_URL = "https://flight-ticket-check-worker.lukaszhangjx-efb.workers.dev";
+
+function getAccessKey() {
+  try { return localStorage.getItem("ftc_access_key") || ""; } catch { return ""; }
+}
+function setAccessKey(key) {
+  try { localStorage.setItem("ftc_access_key", key); } catch (e) { console.warn("localStorage unavailable:", e); }
+}
+
+settingsBtn.addEventListener("click", () => {
+  accessKeyInput.value = getAccessKey();
+  settingsPanel.classList.toggle("hidden");
+});
+document.getElementById("saveAccessKey").addEventListener("click", () => {
+  setAccessKey(accessKeyInput.value.trim());
+  settingsPanel.classList.add("hidden");
+  if (currentRoute) loadRoute(currentRoute.id);
+});
+
+// Real-time query via the Worker (SPEC.md section 5's GET /prices), same
+// `dates` shape as a snapshot file so renderViewA doesn't care which one it got.
+// Returns null (not an error) when no access key is configured yet.
+async function fetchFromWorker(route) {
+  const key = getAccessKey();
+  if (!key) return null;
+  const url = `${WORKER_URL}/prices?origin=${encodeURIComponent(route.origin)}`
+    + `&destination=${encodeURIComponent(route.destination)}`
+    + `&from=${route.date_from}&to=${route.date_to}`;
+  const resp = await fetch(url, { headers: { "X-Access-Key": key } });
+  const body = await resp.json();
+  if (!resp.ok) throw new Error(body.error || `worker HTTP ${resp.status}`);
+  return body;
+}
 const tabA = document.getElementById("tabA");
 const tabB = document.getElementById("tabB");
 const panelA = document.getElementById("panelA");
@@ -111,6 +158,7 @@ const emptyState = document.getElementById("emptyState");
 let routes = [];
 let currentRoute = null;
 let currentSnapshot = null;
+let currentSnapshotSource = null;
 let currentHistory = null;
 let chartA = null;
 let chartB = null;
@@ -219,8 +267,11 @@ function renderChart(chart, airlinesEl, dates, byAirlineAt, minAt, allAirlines, 
 function renderViewA() {
   const rangeEl = document.getElementById("rangeA");
   const chartEl = document.getElementById("chartA");
+  const sourceLabel = currentSnapshotSource === "worker" ? "实时查询 (Worker)"
+    : currentSnapshotSource ? `本地快照 (${currentSnapshotSource.split(":")[1]})`
+    : "无数据";
   rangeEl.textContent = `监控区间 ${currentRoute.date_from} ~ ${currentRoute.date_to}`
-    + ` · 价格上限 ${currentRoute.max_price}€`;
+    + ` · 价格上限 ${currentRoute.max_price}€ · 数据来源: ${sourceLabel}`;
 
   if (!currentSnapshot) {
     chartEl.innerHTML = "<p class='muted'>还没有快照数据。</p>";
@@ -339,11 +390,19 @@ async function loadRoute(routeId) {
   if (!currentRoute) return;
 
   currentSnapshot = null;
-  if (currentRoute.snapshot_dates.length) {
+  currentSnapshotSource = null;
+  try {
+    const workerData = await fetchFromWorker(currentRoute);
+    if (workerData) { currentSnapshot = workerData; currentSnapshotSource = "worker"; }
+  } catch (e) {
+    console.warn("Worker 查询失败，回退到本地快照:", e);
+  }
+  if (!currentSnapshot && currentRoute.snapshot_dates.length) {
     const latest = currentRoute.snapshot_dates[currentRoute.snapshot_dates.length - 1];
     try {
       currentSnapshot = await fetch(`data/snapshots/${routeId}/${latest}.json`,
                                      { cache: "no-store" }).then(r => r.json());
+      currentSnapshotSource = `snapshot:${latest}`;
     } catch (e) { console.error(e); }
   }
   try {

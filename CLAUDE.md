@@ -132,3 +132,4 @@ refactor(collector): 拆分 aggregate.py 中的快照聚合逻辑
 | 只验证 YAML 语法就认为 workflow 改动没问题 | collect.yml/pages.yml 的几个真实 bug 都是语法正确但运行时出错 |
 | 魔法数字/字符串散落各处 | 提取成有名字的常量，集中管理 |
 | 本地 dry-run 生成的假数据被提交进仓库 | 会被误认成真实价格数据；`data/` 只能由 Actions 真实采集产生
+| 本地测试后 `rm -rf data/` 清理 | `data/` 里混着 Actions 提交的真实数据（已被 git 追踪）和本地 dry-run 产物（gitignored），blanket 删除会连真实数据一起删掉——清理前先 `git status` 确认，或者用 `git checkout -- data/` 恢复误删
