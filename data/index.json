@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-11T18:22+00:00",
+ "generated_at": "2026-11-11T19:30+00:00",
  "routes": [
   {
    "id": "MUC-SHA",
@@ -7,18 +7,6 @@
    "destination": "SHA",
    "date_from": "2027-01-01",
    "date_to": "2027-03-31",
-   "max_price": 450,
-   "enabled": true,
-   "snapshot_dates": [
-    "2026-11-11"
-   ]
-  },
-  {
-   "id": "SHA-MUC",
-   "origin": "SHA",
-   "destination": "MUC",
-   "date_from": "2027-01-15",
-   "date_to": "2027-04-15",
    "max_price": 450,
    "enabled": true,
    "snapshot_dates": [
