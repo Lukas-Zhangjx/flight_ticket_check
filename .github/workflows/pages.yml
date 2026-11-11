@@ -5,8 +5,13 @@ on:
     branches: [main]
     paths:
       - "web/**"
-      - "data/**"
       - ".github/workflows/pages.yml"
+  # collect.yml's own commit uses the default GITHUB_TOKEN, and GitHub does
+  # not let GITHUB_TOKEN-authored pushes trigger other workflows' `push`
+  # events - so data/** changes have to be picked up via workflow_run instead.
+  workflow_run:
+    workflows: ["Daily fare collector"]
+    types: [completed]
   workflow_dispatch: {}
 
 permissions:
@@ -20,12 +25,15 @@ concurrency:
 
 jobs:
   deploy:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Stage site (web/ + data/ side by side, as the frontend expects)
         run: |
