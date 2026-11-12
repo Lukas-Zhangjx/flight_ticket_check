@@ -270,8 +270,9 @@ function renderViewA() {
   const sourceLabel = currentSnapshotSource === "worker" ? "实时查询 (Worker)"
     : currentSnapshotSource ? `本地快照 (${currentSnapshotSource.split(":")[1]})`
     : "无数据";
+  const capLabel = currentRoute.max_price != null ? `${currentRoute.max_price}€` : "无上限";
   rangeEl.textContent = `监控区间 ${currentRoute.date_from} ~ ${currentRoute.date_to}`
-    + ` · 价格上限 ${currentRoute.max_price}€ · 数据来源: ${sourceLabel}`;
+    + ` · 价格上限 ${capLabel} · 数据来源: ${sourceLabel}`;
 
   if (!currentSnapshot) {
     chartEl.innerHTML = "<p class='muted'>还没有快照数据。</p>";
