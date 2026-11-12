@@ -28,14 +28,16 @@ def save_alert_state(data_dir, state):
 
 def compute_route_alerts(state, route_id, max_price, dates_dict):
     """Price alert rule (SPEC.md section 0): below max_price AND a new low
-    for that specific departure date. Updates state['best_price'] in place."""
+    for that specific departure date. max_price=None means no cap - alert on
+    every new low. Updates state['best_price'] in place."""
     best_for_route = state["best_price"].setdefault(route_id, {})
     alerts = []
     for dep, day in sorted(dates_dict.items()):
         info = day["min"]
         price = info["price"]
         prev_best = best_for_route.get(dep)
-        if price <= max_price and (prev_best is None or price < prev_best):
+        under_cap = max_price is None or price <= max_price
+        if under_cap and (prev_best is None or price < prev_best):
             alerts.append({
                 "departure_at": dep,
                 "price": price,

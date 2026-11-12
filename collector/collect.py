@@ -130,7 +130,7 @@ def main():
         print(f"{route['id']}: wrote {path} ({len(dates_dict)} date(s) with data)")
         touched_routes.append(route["id"])
 
-        alerts = compute_route_alerts(state, route["id"], route["max_price"],
+        alerts = compute_route_alerts(state, route["id"], route.get("max_price"),
                                        dates_dict)
         if alerts:
             cheapest = min(alerts, key=lambda a: a["price"])
