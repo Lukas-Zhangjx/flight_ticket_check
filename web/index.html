@@ -54,6 +54,15 @@
   }
   .click-panel button.primary { background: #2b6cff; color: #fff; border-color: #2b6cff; }
   footer { margin: 20px 0 10px; color: #888; font-size: 0.8rem; text-align: center; }
+  button.primary { background: #2b6cff; color: #fff; border: 1px solid #2b6cff; border-radius: 8px; padding: 8px 14px; }
+  .mgmt-row {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px;
+  }
+  .mgmt-row input[type="number"] { width: 110px; }
+  .mgmt-row .grow { flex: 1; min-width: 140px; }
+  .mgmt-form input { padding: 8px; border-radius: 8px; border: 1px solid #ccc; }
+  .danger { color: #c0392b; border-color: #e8b3ac !important; background: #fff; }
 </style>
 </head>
 <body>
@@ -74,6 +83,7 @@
 <div class="tabs">
   <button id="tabA" class="active">视图 A · 未来价格</button>
   <button id="tabB">视图 B · 历史价格</button>
+  <button id="tabM">管理航线</button>
 </div>
 
 <div id="panelA" class="panel active">
@@ -91,6 +101,43 @@
   <div id="noHistoryB" class="note hidden"></div>
   <div class="airlines" id="airlinesB"></div>
   <div class="chart" id="chartB"></div>
+</div>
+
+<div id="panelM" class="panel">
+  <div id="mgmtAuthNote" class="note hidden">
+    需要先在上面"⚙ 设置"里填访问口令才能管理航线（和视图A实时查询用的是同一个口令）。
+  </div>
+  <div id="mgmtList"></div>
+
+  <div class="mgmt-row mgmt-form" style="flex-direction:column; align-items:stretch">
+    <b>+ 新增航线</b>
+    <div class="row">
+      <input id="newOrigin" placeholder="出发地代码 如 MUC" maxlength="3" style="width:140px">
+      <input id="newDest" placeholder="目的地代码 如 BKK" maxlength="3" style="width:140px">
+    </div>
+    <div class="row">
+      <label class="muted">出发日期范围</label>
+      <input type="date" id="newDateFrom">
+      <span class="muted">~</span>
+      <input type="date" id="newDateTo">
+    </div>
+    <div class="row">
+      <input id="newMaxPrice" type="number" placeholder="价格上限€ (留空=无上限)" style="width:200px">
+    </div>
+    <div>
+      <button id="addRouteBtn">添加到列表（还没保存）</button>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top:10px">
+    <button id="saveWatchlistBtn" class="primary">保存到 Worker</button>
+    <span class="muted" id="mgmtStatus"></span>
+  </div>
+  <div class="muted" style="margin-top:6px">
+    保存后 Worker 立刻生效，视图A的实时查询马上能看到；但上面下拉列表里出现新航线、
+    视图B的历史曲线，要等下一次每日采集任务跑完（自动每天一次，也可以手动触发）才会更新。
+    同国家的出发地/目的地会被 Worker 拒绝（只支持国际航线）。
+  </div>
 </div>
 
 <div id="emptyState" class="note hidden"></div>
@@ -148,6 +195,138 @@ async function fetchFromWorker(route) {
   if (!resp.ok) throw new Error(body.error || `worker HTTP ${resp.status}`);
   return body;
 }
+
+// --- Phase 6: watchlist management (Worker's GET/PUT /watchlist) ---
+const tabM = document.getElementById("tabM");
+const panelM = document.getElementById("panelM");
+const mgmtAuthNote = document.getElementById("mgmtAuthNote");
+const mgmtList = document.getElementById("mgmtList");
+const mgmtStatus = document.getElementById("mgmtStatus");
+let managedRoutes = null; // full watchlist objects from the Worker, not the trimmed index.json ones
+
+async function fetchWatchlistFromWorker() {
+  const key = getAccessKey();
+  const resp = await fetch(`${WORKER_URL}/watchlist`, { headers: { "X-Access-Key": key } });
+  const body = await resp.json();
+  if (!resp.ok) throw new Error(body.error || `worker HTTP ${resp.status}`);
+  return body;
+}
+
+async function putWatchlistToWorker(list) {
+  const key = getAccessKey();
+  const resp = await fetch(`${WORKER_URL}/watchlist`, {
+    method: "PUT",
+    headers: { "X-Access-Key": key, "Content-Type": "application/json" },
+    body: JSON.stringify(list),
+  });
+  const body = await resp.json();
+  if (!resp.ok) throw new Error(body.error || `worker HTTP ${resp.status}`);
+  return body;
+}
+
+function renderManagementList() {
+  mgmtList.innerHTML = "";
+  if (!managedRoutes || !managedRoutes.length) {
+    mgmtList.innerHTML = `<p class="muted">关注列表是空的，在下面添加一条。</p>`;
+    return;
+  }
+  managedRoutes.forEach((route, idx) => {
+    const row = document.createElement("div");
+    row.className = "mgmt-row";
+    row.innerHTML = `
+      <b>${route.origin} → ${route.destination}</b>
+      <span class="muted">(${route.id})</span>
+      <span class="muted grow">${route.date_from} ~ ${route.date_to}</span>
+      <label class="muted">上限€
+        <input type="number" class="mgmt-maxprice" placeholder="无上限"
+               value="${route.max_price != null ? route.max_price : ""}">
+      </label>
+      <label class="muted"><input type="checkbox" class="mgmt-enabled" ${route.enabled ? "checked" : ""}> 启用</label>
+      <button class="danger mgmt-delete">删除</button>
+    `;
+    row.querySelector(".mgmt-maxprice").addEventListener("change", (e) => {
+      const v = e.target.value.trim();
+      managedRoutes[idx].max_price = v === "" ? null : Number(v);
+    });
+    row.querySelector(".mgmt-enabled").addEventListener("change", (e) => {
+      managedRoutes[idx].enabled = e.target.checked;
+    });
+    row.querySelector(".mgmt-delete").addEventListener("click", () => {
+      managedRoutes.splice(idx, 1);
+      renderManagementList();
+    });
+    mgmtList.appendChild(row);
+  });
+}
+
+async function loadManagement() {
+  const key = getAccessKey();
+  if (!key) {
+    mgmtAuthNote.classList.remove("hidden");
+    mgmtList.innerHTML = "";
+    document.querySelector(".mgmt-form").classList.add("hidden");
+    document.getElementById("saveWatchlistBtn").disabled = true;
+    return;
+  }
+  mgmtAuthNote.classList.add("hidden");
+  document.querySelector(".mgmt-form").classList.remove("hidden");
+  document.getElementById("saveWatchlistBtn").disabled = false;
+  mgmtStatus.textContent = "加载中…";
+  try {
+    managedRoutes = await fetchWatchlistFromWorker();
+    mgmtStatus.textContent = "";
+  } catch (e) {
+    mgmtStatus.textContent = "加载失败: " + e.message;
+    managedRoutes = [];
+  }
+  renderManagementList();
+}
+
+document.getElementById("addRouteBtn").addEventListener("click", () => {
+  const origin = document.getElementById("newOrigin").value.trim().toUpperCase();
+  const dest = document.getElementById("newDest").value.trim().toUpperCase();
+  const dateFrom = document.getElementById("newDateFrom").value;
+  const dateTo = document.getElementById("newDateTo").value;
+  const maxPriceRaw = document.getElementById("newMaxPrice").value.trim();
+
+  if (!/^[A-Z]{3}$/.test(origin) || !/^[A-Z]{3}$/.test(dest)) {
+    mgmtStatus.textContent = "出发地/目的地要填 3 个字母的机场或城市代码";
+    return;
+  }
+  if (!dateFrom || !dateTo || dateFrom > dateTo) {
+    mgmtStatus.textContent = "日期范围不对";
+    return;
+  }
+  const id = `${origin}-${dest}`;
+  if (managedRoutes.some(r => r.id === id)) {
+    mgmtStatus.textContent = `${id} 已经在列表里了，直接在上面那行改`;
+    return;
+  }
+  managedRoutes.push({
+    id, origin, destination: dest,
+    date_from: dateFrom, date_to: dateTo,
+    max_price: maxPriceRaw === "" ? null : Number(maxPriceRaw),
+    airlines: [],
+    enabled: true,
+    created_at: new Date().toISOString().slice(0, 10),
+  });
+  mgmtStatus.textContent = `${id} 已加入列表（还没保存，记得点"保存到 Worker"）`;
+  document.getElementById("newOrigin").value = "";
+  document.getElementById("newDest").value = "";
+  document.getElementById("newMaxPrice").value = "";
+  renderManagementList();
+});
+
+document.getElementById("saveWatchlistBtn").addEventListener("click", async () => {
+  mgmtStatus.textContent = "保存中…";
+  try {
+    const result = await putWatchlistToWorker(managedRoutes);
+    mgmtStatus.textContent = `保存成功，共 ${result.count} 条航线`;
+  } catch (e) {
+    mgmtStatus.textContent = "保存失败: " + e.message;
+  }
+});
+
 const tabA = document.getElementById("tabA");
 const tabB = document.getElementById("tabB");
 const panelA = document.getElementById("panelA");
@@ -378,13 +557,17 @@ document.getElementById("clickClose").onclick = () => clickPanel.classList.remov
 function switchTab(which) {
   tabA.classList.toggle("active", which === "A");
   tabB.classList.toggle("active", which === "B");
+  tabM.classList.toggle("active", which === "M");
   panelA.classList.toggle("active", which === "A");
   panelB.classList.toggle("active", which === "B");
+  panelM.classList.toggle("active", which === "M");
   if (which === "A" && chartA) chartA.resize();
   if (which === "B" && chartB) chartB.resize();
+  if (which === "M") loadManagement();
 }
 tabA.addEventListener("click", () => switchTab("A"));
 tabB.addEventListener("click", () => switchTab("B"));
+tabM.addEventListener("click", () => switchTab("M"));
 
 async function loadRoute(routeId) {
   currentRoute = routes.find(r => r.id === routeId);
