@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-11T20:18+00:00",
+ "generated_at": "2026-11-12T14:56+00:00",
  "routes": [
   {
    "id": "MUC-SHA",
@@ -10,7 +10,8 @@
    "max_price": 450,
    "enabled": true,
    "snapshot_dates": [
-    "2026-11-11"
+    "2026-11-11",
+    "2026-11-12"
    ]
   },
   {
@@ -22,7 +23,8 @@
    "max_price": 450,
    "enabled": true,
    "snapshot_dates": [
-    "2026-11-11"
+    "2026-11-11",
+    "2026-11-12"
    ]
   }
  ]
