@@ -132,4 +132,5 @@ refactor(collector): 拆分 aggregate.py 中的快照聚合逻辑
 | 只验证 YAML 语法就认为 workflow 改动没问题 | collect.yml/pages.yml 的几个真实 bug 都是语法正确但运行时出错 |
 | 魔法数字/字符串散落各处 | 提取成有名字的常量，集中管理 |
 | 本地 dry-run 生成的假数据被提交进仓库 | 会被误认成真实价格数据；`data/` 只能由 Actions 真实采集产生
-| 本地测试后 `rm -rf data/` 清理 | `data/` 里混着 Actions 提交的真实数据（已被 git 追踪）和本地 dry-run 产物（gitignored），blanket 删除会连真实数据一起删掉——清理前先 `git status` 确认，或者用 `git checkout -- data/` 恢复误删
+| 本地跑 `collect.py --dry-run` 不带 `--data-dir` | 默认会写进仓库自己的 `data/`，跟 Actions 提交的真实数据混在一起——本地测试一律加 `--data-dir /tmp/xxx` 或 `--data-dir` 指向别处，不要让 dry-run 碰仓库里的 `data/`
+| 本地测试后 `rm -rf data/` 清理 | `data/` 里混着 Actions 提交的真实数据（已被 git 追踪）和本地 dry-run 产物（gitignored），blanket 删除会连真实数据一起删掉——清理前先 `git status` 确认，或者用 `git restore data/` 恢复误删（这条规则本身已经被忘记执行过不止一次，养成"测试一律用 --data-dir"的习惯比事后补救更可靠）
