@@ -1,0 +1,24 @@
+{
+ "route_id": "SHA-MUC",
+ "fetched_at": "2026-11-13T14:41+00:00",
+ "currency": "EUR",
+ "source": "travelpayouts-cache",
+ "dates": {
+  "2027-04-04": {
+   "min": {
+    "price": 345,
+    "airline": "GF",
+    "flight_number": "125",
+    "transfers": 1,
+    "link": "/search/SHA0404MUC1?t=GF18068541001806906900001240PVGBAHMUC_2b2c3ae2df2817ae7377dfdb347dd4ce_31528&search_date=08112026&expected_price_uuid=01a1bd89-bda4-8030-68b1-3cd0a9f8d4f1&static_fare_key=TY%7CP1%7CH1%7CL1_1_25%7CCH0%7CR0%7CTBC1&itinerary_key=QS2NBLOqAHz5HSPGf8LKyA&expected_price_source=share&expected_price_currency=eur&expected_price=345"
+   },
+   "by_airline": {
+    "GF": {
+     "price": 345,
+     "flight_number": "125",
+     "transfers": 1
+    }
+   }
+  }
+ }
+}
