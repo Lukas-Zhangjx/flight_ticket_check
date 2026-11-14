@@ -1,0 +1,24 @@
+{
+ "route_id": "MUC-SHA",
+ "fetched_at": "2026-11-14T13:38+00:00",
+ "currency": "EUR",
+ "source": "travelpayouts-cache",
+ "dates": {
+  "2027-01-12": {
+   "min": {
+    "price": 401,
+    "airline": "VF",
+    "flight_number": "42",
+    "transfers": 2,
+    "link": "/search/MUC1201SHA1?t=D717997612001799972400003100MUCSAWKULPVG_88e1af3449cb348ec1853000e3d5eb89_36494&search_date=13112026&expected_price_uuid=01a1d411-3124-8031-2ae0-a508dd20e790&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=USo8yvOw8Zb53_zN8CS4Nw&expected_price_source=share&expected_price_currency=eur&expected_price=401"
+   },
+   "by_airline": {
+    "VF": {
+     "price": 401,
+     "flight_number": "42",
+     "transfers": 2
+    }
+   }
+  }
+ }
+}
