@@ -9,7 +9,9 @@
   },
   "SHA-MUC": {
    "2027-04-04": 345,
-   "2027-01-17": 343
+   "2027-01-17": 342,
+   "2027-01-15": 394,
+   "2027-01-18": 401
   }
  },
  "seen_rss": [
@@ -132,6 +134,17 @@
   "https://www.urlaubspiraten.de/pauschalreisen/2-for-1-hawaii",
   "https://www.urlaubspiraten.de/sonstiges/tropical-islands-tagesticket",
   "https://www.urlaubspiraten.de/pauschalreisen/teneriffa-4-sterne-halbpension-package",
-  "https://www.urlaubspiraten.de/pauschalreisen/black-week-bei-weloveholidays"
+  "https://www.urlaubspiraten.de/pauschalreisen/black-week-bei-weloveholidays",
+  "https://www.urlaubspiraten.de/pauschalreisen/voco-malta",
+  "https://www.urlaubspiraten.de/hotels/villa-tuulikki",
+  "https://www.urlaubspiraten.de/hotels/elzland-hotel-pfauen",
+  "https://www.urlaubspiraten.de/hotels/pullman-khao-lak-resort",
+  "https://www.urlaubspiraten.de/hotels/winterwonderland-maerchenhaftes-monschau",
+  "https://www.urlaubspiraten.de/pauschalreisen/istanbul-silvester-package",
+  "https://www.urlaubspiraten.de/pauschalreisen/tromso-kurztrip",
+  "https://www.urlaubspiraten.de/hotels/bergparadies-dorfgastein",
+  "https://www.urlaubspiraten.de/hotels/hotel-wilder-mann-meersburg",
+  "https://www.urlaubspiraten.de/sonstiges/direktverbindung-berlin-paris",
+  "https://www.urlaubspiraten.de/reise-journal/der-erste-all-inclusive-weihnachtsmarkt-deutschlands"
  ]
 }
