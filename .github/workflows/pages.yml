@@ -10,7 +10,7 @@ on:
   # not let GITHUB_TOKEN-authored pushes trigger other workflows' `push`
   # events - so data/** changes have to be picked up via workflow_run instead.
   workflow_run:
-    workflows: ["Daily fare collector"]
+    workflows: ["Fare collector"]
     types: [completed]
   workflow_dispatch: {}
 
