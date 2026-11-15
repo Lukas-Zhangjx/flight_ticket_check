@@ -81,8 +81,7 @@
 </div>
 
 <div class="tabs">
-  <button id="tabA" class="active">视图 A · 未来价格</button>
-  <button id="tabB">视图 B · 历史价格</button>
+  <button id="tabA" class="active">未来价格</button>
   <button id="tabM">管理航线</button>
 </div>
 
@@ -94,17 +93,7 @@
   </div>
   <div class="airlines" id="airlinesA"></div>
   <div class="chart" id="chartA"></div>
-  <div class="muted">点图上的点可以去订票，或者看这一天的历史价格走势</div>
-</div>
-
-<div id="panelB" class="panel">
-  <div class="row">
-    <label class="muted">出发日期</label>
-    <input type="date" id="depInput">
-  </div>
-  <div id="noHistoryB" class="note hidden"></div>
-  <div class="airlines" id="airlinesB"></div>
-  <div class="chart" id="chartB"></div>
+  <div class="muted">点图上的点可以去订票。彩色实心点 = 该航司当天有缓存价；彩色虚线只是把同一航司前后两个有价格的日子连起来，中间那些天没有数据；黑线 = 每日最低价，只在相邻两天都有数据时才连线。</div>
 </div>
 
 <div id="panelM" class="panel">
@@ -137,8 +126,8 @@
     <span class="muted" id="mgmtStatus"></span>
   </div>
   <div class="muted" style="margin-top:6px">
-    保存后 Worker 立刻生效，视图A的实时查询马上能看到；但上面下拉列表里出现新航线、
-    视图B的历史曲线，要等下一次每日采集任务跑完（自动每天一次，也可以手动触发）才会更新。
+    保存后立刻生效：下拉框马上更新，新航线可以直接点"立即更新"查实时价格；
+    历史累计的快照会从下一次自动采集（每天两次）开始积累。
     同国家的出发地/目的地会被 Worker 拒绝（只支持国际航线）。
   </div>
 </div>
@@ -151,7 +140,6 @@
   <div id="clickInfo"></div>
   <div class="actions">
     <button id="clickBook" class="primary">去订票</button>
-    <button id="clickHistory">看这天的历史价格</button>
     <button id="clickClose">关闭</button>
   </div>
 </div>
@@ -161,7 +149,6 @@ const routeSelect = document.getElementById("routeSelect");
 const settingsBtn = document.getElementById("settingsBtn");
 const settingsPanel = document.getElementById("settingsPanel");
 const accessKeyInput = document.getElementById("accessKeyInput");
-const depInput = document.getElementById("depInput");
 
 // SPEC.md section 3: Worker URL isn't sensitive (it's just an endpoint),
 // only the access key is - that one lives in localStorage, never in the repo.
@@ -245,7 +232,9 @@ function renderManagementList() {
     row.innerHTML = `
       <b>${route.origin} → ${route.destination}</b>
       <span class="muted">(${route.id})</span>
-      <span class="muted grow">${route.date_from || "今天"} ~ ${route.date_to}</span>
+      <span class="muted grow">${route.date_from || "今天"} ~
+        <label class="muted">起飞 <input type="date" class="mgmt-dateto" value="${route.date_to}" min="${todayISO()}"></label>
+      </span>
       <label class="muted">上限€
         <input type="number" class="mgmt-maxprice" placeholder="无上限"
                value="${route.max_price != null ? route.max_price : ""}">
@@ -256,6 +245,14 @@ function renderManagementList() {
     row.querySelector(".mgmt-maxprice").addEventListener("change", (e) => {
       const v = e.target.value.trim();
       managedRoutes[idx].max_price = v === "" ? null : Number(v);
+    });
+    row.querySelector(".mgmt-dateto").addEventListener("change", (e) => {
+      if (e.target.value && e.target.value >= todayISO()) {
+        managedRoutes[idx].date_to = e.target.value;
+      } else {
+        e.target.value = managedRoutes[idx].date_to;
+        mgmtStatus.textContent = "起飞时间要选今天或之后的日期";
+      }
     });
     row.querySelector(".mgmt-enabled").addEventListener("change", (e) => {
       managedRoutes[idx].enabled = e.target.checked;
@@ -337,9 +334,7 @@ document.getElementById("saveWatchlistBtn").addEventListener("click", async () =
 });
 
 const tabA = document.getElementById("tabA");
-const tabB = document.getElementById("tabB");
 const panelA = document.getElementById("panelA");
-const panelB = document.getElementById("panelB");
 const clickPanel = document.getElementById("clickPanel");
 const emptyState = document.getElementById("emptyState");
 
@@ -347,9 +342,7 @@ let routes = [];
 let currentRoute = null;
 let currentSnapshot = null;
 let currentSnapshotSource = null;
-let currentHistory = null;
 let chartA = null;
-let chartB = null;
 
 function dateRange(fromISO, toISO) {
   const out = [];
@@ -397,11 +390,23 @@ function renderChart(chart, airlinesEl, dates, byAirlineAt, minAt, allAirlines, 
 
   function draw() {
     const activeAirlines = allAirlines.filter(a => checkboxes[a].checked);
+    // Cache coverage is sparse, so an airline rarely has two consecutive
+    // days of data: with connectNulls:false its "line" degenerates into a
+    // few lone dots, and since the day's minimum IS one of those dots the
+    // black min series (drawn on top) hid them completely - the user saw
+    // only black. Airlines now draw a thin dashed connector across the gap
+    // (no fabricated values, just a visual link between real points) with
+    // their dots layered above the min line; the min line itself stays
+    // solid and unconnected so real gaps remain visible there.
     const series = activeAirlines.map(airline => ({
       name: airline,
       type: "line",
-      connectNulls: false,
-      symbolSize: 5,
+      connectNulls: true,
+      symbol: "circle",
+      symbolSize: 8,
+      lineStyle: { width: 1.5, type: "dashed", opacity: 0.8 },
+      emphasis: { focus: "series" },
+      z: 20,
       data: dates.map(d => {
         const byAirline = byAirlineAt(d);
         return byAirline && byAirline[airline] !== undefined ? byAirline[airline] : null;
@@ -411,9 +416,11 @@ function renderChart(chart, airlinesEl, dates, byAirlineAt, minAt, allAirlines, 
       name: "每日最低价",
       type: "line",
       connectNulls: false,
-      symbolSize: 7,
-      lineStyle: { width: 4, color: "#222" },
-      itemStyle: { color: "#222" },
+      symbol: "circle",
+      symbolSize: 11,
+      showSymbol: true,
+      lineStyle: { width: 3, color: "#222" },
+      itemStyle: { color: "transparent", borderColor: "#222", borderWidth: 2 },
       z: 10,
       data: dates.map(d => {
         const info = minAt(d);
@@ -507,48 +514,6 @@ function bindDateClick(chart, dates, onDate) {
   });
 }
 
-function renderViewB() {
-  const noHistoryEl = document.getElementById("noHistoryB");
-  const chartEl = document.getElementById("chartB");
-  const airlinesEl = document.getElementById("airlinesB");
-  const dep = depInput.value;
-  const byQuery = currentHistory && currentHistory.departures
-    ? currentHistory.departures[dep] : null;
-
-  if (!byQuery || Object.keys(byQuery).length === 0) {
-    const started = currentRoute.snapshot_dates[0];
-    noHistoryEl.textContent = started
-      ? `这条航线从 ${started} 开始记录，${dep} 这天的历史数据还在积累中。`
-      : `这条航线还没有任何快照数据，历史数据还在积累中。`;
-    noHistoryEl.classList.remove("hidden");
-    chartEl.classList.add("hidden");
-    airlinesEl.innerHTML = "";
-    return;
-  }
-  noHistoryEl.classList.add("hidden");
-  chartEl.classList.remove("hidden");
-
-  const queryDates = currentRoute.snapshot_dates.length
-    ? dateRange(currentRoute.snapshot_dates[0],
-                currentRoute.snapshot_dates[currentRoute.snapshot_dates.length - 1])
-    : [];
-  const byAirlineAt = (d) => byQuery[d];
-  const minAt = (d) => {
-    const prices = byQuery[d];
-    if (!prices) return undefined;
-    let bestAirline = null, bestPrice = Infinity;
-    for (const [airline, price] of Object.entries(prices)) {
-      if (price < bestPrice) { bestPrice = price; bestAirline = airline; }
-    }
-    return bestAirline ? { price: bestPrice, airline: bestAirline } : undefined;
-  };
-  const allAirlines = [...new Set(queryDates.flatMap(d => Object.keys(byAirlineAt(d) || {})))].sort();
-  const defaultOn = topAirlines(queryDates, byAirlineAt);
-
-  if (!chartB) chartB = echarts.init(chartEl);
-  renderChart(chartB, airlinesEl, queryDates, byAirlineAt, minAt, allAirlines, defaultOn);
-}
-
 function showClickPanel(date, info) {
   document.getElementById("clickInfo").innerHTML =
     `<b>${currentRoute.origin} → ${currentRoute.destination}</b> · 去程 ${date}`
@@ -558,29 +523,19 @@ function showClickPanel(date, info) {
   document.getElementById("clickBook").onclick = () => {
     if (info.link) window.open("https://www.aviasales.com" + info.link, "_blank");
   };
-  document.getElementById("clickHistory").onclick = () => {
-    depInput.value = date;
-    switchTab("B");
-    renderViewB();
-    clickPanel.classList.remove("show");
-  };
   clickPanel.classList.add("show");
 }
 document.getElementById("clickClose").onclick = () => clickPanel.classList.remove("show");
 
 function switchTab(which) {
   tabA.classList.toggle("active", which === "A");
-  tabB.classList.toggle("active", which === "B");
   tabM.classList.toggle("active", which === "M");
   panelA.classList.toggle("active", which === "A");
-  panelB.classList.toggle("active", which === "B");
   panelM.classList.toggle("active", which === "M");
   if (which === "A" && chartA) chartA.resize();
-  if (which === "B" && chartB) chartB.resize();
   if (which === "M") loadManagement();
 }
 tabA.addEventListener("click", () => switchTab("A"));
-tabB.addEventListener("click", () => switchTab("B"));
 tabM.addEventListener("click", () => switchTab("M"));
 
 // Merge every collected snapshot for a route into one map, oldest first so a
@@ -625,22 +580,8 @@ async function loadRoute(routeId) {
   currentSnapshotSource = totalCount
     ? (usedWorker ? `worker+accumulated:${accumulatedCount}` : `accumulated:${accumulatedCount}`)
     : null;
-  try {
-    currentHistory = await fetch(dataUrl(`data/history/${routeId}.json`),
-                                  { cache: "no-store" }).then(r => r.json());
-  } catch (e) {
-    currentHistory = { departures: {} };
-  }
-
-  depInput.min = effectiveFrom(currentRoute);
-  depInput.max = currentRoute.date_to;
-  const depsWithData = Object.keys(currentHistory.departures || {}).sort();
-  depInput.value = depsWithData[0] || effectiveFrom(currentRoute);
-
   renderViewA();
-  renderViewB();
 }
-depInput.addEventListener("change", renderViewB);
 routeSelect.addEventListener("change", () => loadRoute(routeSelect.value));
 
 // "立即更新": re-query the Worker with fresh=1 (skips its 1h edge cache, so
@@ -727,7 +668,7 @@ async function reloadRoutes(preferredId) {
 }
 
 async function main() { await reloadRoutes(); }
-window.addEventListener("resize", () => { chartA && chartA.resize(); chartB && chartB.resize(); });
+window.addEventListener("resize", () => { chartA && chartA.resize(); });
 main();
 </script>
 </body>
