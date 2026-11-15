@@ -1,9 +1,14 @@
-name: Daily fare collector
+name: Fare collector
 
 on:
   schedule:
-    # 06:17 UTC daily, off the hour per SPEC.md section 6
+    # Every ~12h, off the hour per SPEC.md section 6. Travelpayouts' cache
+    # coverage per single query is sparse and unpredictable (sometimes 1
+    # date out of 90 has a price, sometimes a dozen) - running twice a day
+    # instead of once roughly doubles how fast real coverage accumulates
+    # across data/snapshots, since the frontend now merges all of them.
     - cron: "17 6 * * *"
+    - cron: "17 18 * * *"
   workflow_dispatch: {}
 
 permissions:

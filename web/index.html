@@ -446,9 +446,13 @@ function renderChart(chart, airlinesEl, dates, byAirlineAt, minAt, allAirlines, 
 function renderViewA() {
   const rangeEl = document.getElementById("rangeA");
   const chartEl = document.getElementById("chartA");
-  const sourceLabel = currentSnapshotSource === "worker" ? "实时查询 (Worker)"
-    : currentSnapshotSource ? `本地快照 (${currentSnapshotSource.split(":")[1]})`
-    : "无数据";
+  let sourceLabel = "无数据";
+  if (currentSnapshotSource) {
+    const [kind, count] = currentSnapshotSource.split(":");
+    sourceLabel = kind === "worker+accumulated" ? `实时查询 + 历史累计共${count}天有数据`
+      : kind === "accumulated" ? `历史累计共${count}天有数据（无实时）`
+      : "无数据";
+  }
   const capLabel = currentRoute.max_price != null ? `${currentRoute.max_price}€` : "无上限";
   rangeEl.textContent = `监控区间 ${currentRoute.date_from} ~ ${currentRoute.date_to}`
     + ` · 价格上限 ${capLabel} · 数据来源: ${sourceLabel}`;
@@ -569,26 +573,48 @@ tabA.addEventListener("click", () => switchTab("A"));
 tabB.addEventListener("click", () => switchTab("B"));
 tabM.addEventListener("click", () => switchTab("M"));
 
+// Merge every collected snapshot for a route into one map, oldest first so a
+// later (fresher) snapshot overwrites an earlier one on the same departure
+// date. A single Travelpayouts query's cache coverage is sparse and
+// unpredictable (sometimes 1 date out of 90 has a price, sometimes a dozen),
+// so without this a date found yesterday just vanishes the day a query
+// misses it - accumulating across runs builds a much fuller price map.
+async function buildAccumulatedDates(route) {
+  const merged = {};
+  const snapshots = await Promise.all((route.snapshot_dates || []).map(d =>
+    fetch(`data/snapshots/${route.id}/${d}.json`, { cache: "no-store" })
+      .then(r => r.ok ? r.json() : null)
+      .catch(() => null)
+  ));
+  for (const snap of snapshots) {
+    if (snap && snap.dates) Object.assign(merged, snap.dates);
+  }
+  return merged;
+}
+
 async function loadRoute(routeId) {
   currentRoute = routes.find(r => r.id === routeId);
   if (!currentRoute) return;
 
-  currentSnapshot = null;
-  currentSnapshotSource = null;
+  let mergedDates = {};
+  try {
+    mergedDates = await buildAccumulatedDates(currentRoute);
+  } catch (e) { console.error(e); }
+  const accumulatedCount = Object.keys(mergedDates).length;
+
+  let usedWorker = false;
   try {
     const workerData = await fetchFromWorker(currentRoute);
-    if (workerData) { currentSnapshot = workerData; currentSnapshotSource = "worker"; }
+    if (workerData) { Object.assign(mergedDates, workerData.dates); usedWorker = true; }
   } catch (e) {
-    console.warn("Worker 查询失败，回退到本地快照:", e);
+    console.warn("Worker 实时查询失败，继续用累计的历史快照数据:", e);
   }
-  if (!currentSnapshot && currentRoute.snapshot_dates.length) {
-    const latest = currentRoute.snapshot_dates[currentRoute.snapshot_dates.length - 1];
-    try {
-      currentSnapshot = await fetch(`data/snapshots/${routeId}/${latest}.json`,
-                                     { cache: "no-store" }).then(r => r.json());
-      currentSnapshotSource = `snapshot:${latest}`;
-    } catch (e) { console.error(e); }
-  }
+
+  const totalCount = Object.keys(mergedDates).length;
+  currentSnapshot = totalCount ? { dates: mergedDates } : null;
+  currentSnapshotSource = totalCount
+    ? (usedWorker ? `worker+accumulated:${accumulatedCount}` : `accumulated:${accumulatedCount}`)
+    : null;
   try {
     currentHistory = await fetch(`data/history/${routeId}.json`,
                                   { cache: "no-store" }).then(r => r.json());
