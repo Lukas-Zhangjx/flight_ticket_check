@@ -181,7 +181,7 @@ settingsBtn.addEventListener("click", () => {
 document.getElementById("saveAccessKey").addEventListener("click", () => {
   setAccessKey(accessKeyInput.value.trim());
   settingsPanel.classList.add("hidden");
-  if (currentRoute) loadRoute(currentRoute.id);
+  reloadRoutes(currentRoute && currentRoute.id);
 });
 
 // Real-time query via the Worker (SPEC.md section 5's GET /prices), same
@@ -330,6 +330,7 @@ document.getElementById("saveWatchlistBtn").addEventListener("click", async () =
   try {
     const result = await putWatchlistToWorker(managedRoutes);
     mgmtStatus.textContent = `保存成功，共 ${result.count} 条航线`;
+    await reloadRoutes(currentRoute && currentRoute.id);
   } catch (e) {
     mgmtStatus.textContent = "保存失败: " + e.message;
   }
@@ -591,7 +592,7 @@ tabM.addEventListener("click", () => switchTab("M"));
 async function buildAccumulatedDates(route) {
   const merged = {};
   const snapshots = await Promise.all((route.snapshot_dates || []).map(d =>
-    fetch(`data/snapshots/${route.id}/${d}.json`, { cache: "no-store" })
+    fetch(dataUrl(`data/snapshots/${route.id}/${d}.json`), { cache: "no-store" })
       .then(r => r.ok ? r.json() : null)
       .catch(() => null)
   ));
@@ -625,7 +626,7 @@ async function loadRoute(routeId) {
     ? (usedWorker ? `worker+accumulated:${accumulatedCount}` : `accumulated:${accumulatedCount}`)
     : null;
   try {
-    currentHistory = await fetch(`data/history/${routeId}.json`,
+    currentHistory = await fetch(dataUrl(`data/history/${routeId}.json`),
                                   { cache: "no-store" }).then(r => r.json());
   } catch (e) {
     currentHistory = { departures: {} };
@@ -672,32 +673,60 @@ refreshBtn.addEventListener("click", async () => {
   setTimeout(() => { refreshBtn.disabled = false; }, REFRESH_COOLDOWN_MS);
 });
 
-async function main() {
-  let index;
+// GitHub Pages' CDN caches every file for up to 10 minutes keyed by URL, and
+// `cache: "no-store"` only controls the browser's own cache. A unique query
+// string per request makes the CDN miss and go to origin, so the page always
+// reflects the latest commit instead of whatever the edge happened to cache.
+function dataUrl(path) { return `${path}?t=${Date.now()}`; }
+
+// Route config comes straight from the Worker when a key is set: instant and
+// authoritative, so a change saved in 管理航线 shows up immediately instead of
+// after the next collector run. data/index.json then only contributes each
+// route's snapshot_dates. Without a key, fall back to index.json entirely.
+async function loadRouteList() {
+  let indexRoutes = [];
   try {
-    index = await fetch("data/index.json", { cache: "no-store" }).then(r => {
-      if (!r.ok) throw new Error("no data yet");
-      return r.json();
-    });
+    const r = await fetch(dataUrl("data/index.json"), { cache: "no-store" });
+    if (r.ok) indexRoutes = (await r.json()).routes || [];
+  } catch (e) { console.warn("index.json unavailable:", e); }
+
+  if (!getAccessKey()) return indexRoutes;
+  try {
+    const workerRoutes = await fetchWatchlistFromWorker();
+    const byId = Object.fromEntries(indexRoutes.map(r => [r.id, r]));
+    return workerRoutes.map(r => ({
+      ...r, snapshot_dates: (byId[r.id] || {}).snapshot_dates || [],
+    }));
   } catch (e) {
-    emptyState.textContent = "还没有数据。等每日采集任务第一次运行后这里会显示关注列表。";
-    emptyState.classList.remove("hidden");
-    return;
+    console.warn("Worker watchlist unavailable, using index.json:", e);
+    return indexRoutes;
   }
-  routes = index.routes || [];
+}
+
+async function reloadRoutes(preferredId) {
+  routes = await loadRouteList();
+  routeSelect.innerHTML = "";
   if (!routes.length) {
-    emptyState.textContent = "关注列表是空的，还没有监控任何航线。";
+    emptyState.textContent = getAccessKey()
+      ? "关注列表是空的，去“管理航线”加一条。"
+      : "还没有数据。等采集任务跑过一次，或者在“⚙ 设置”里填口令后直接读取关注列表。";
     emptyState.classList.remove("hidden");
     return;
   }
+  emptyState.classList.add("hidden");
   routes.forEach(r => {
     const opt = document.createElement("option");
     opt.value = r.id;
-    opt.textContent = `${r.origin} → ${r.destination} (${r.id})`;
+    opt.textContent = `${r.origin} → ${r.destination} (${r.id})`
+      + (r.enabled === false ? " · 已停用" : "");
     routeSelect.appendChild(opt);
   });
-  await loadRoute(routes[0].id);
+  const pick = routes.some(r => r.id === preferredId) ? preferredId : routes[0].id;
+  routeSelect.value = pick;
+  await loadRoute(pick);
 }
+
+async function main() { await reloadRoutes(); }
 window.addEventListener("resize", () => { chartA && chartA.resize(); chartB && chartB.resize(); });
 main();
 </script>
