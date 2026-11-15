@@ -33,7 +33,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from aggregate import (aggregate_entries, month_range, regenerate_history,
                         regenerate_index, write_snapshot)
-from alert_state import compute_route_alerts, load_alert_state, save_alert_state, state_path
+from alert_state import compute_route_alerts, load_alert_state, save_alert_state
 from fake_data import fake_entries_for_route
 from notify import notify
 from rss import check_rss
@@ -43,7 +43,15 @@ from worker_client import get_watchlist
 DEFAULT_WATCHLIST = Path(__file__).with_name("watchlist.json")
 DEFAULT_DATA_DIR = Path(__file__).parent.parent / "data"
 
-DEFAULT_RSS_FEEDS = "https://www.secretflying.com/feed/,https://www.urlaubspiraten.de/feed"
+# secretflying.com/feed/ (SPEC.md's original pick) now answers with an HTML
+# page for any client, so it was silently dead; replaced with feeds verified
+# to parse and to actually carry Shanghai/China deals.
+DEFAULT_RSS_FEEDS = ",".join([
+    "https://www.urlaubspiraten.de/feed",
+    "https://travel-dealz.de/feed/",
+    "https://www.fly4free.com/feed/",
+    "https://www.travelfree.info/feed/",
+])
 DEFAULT_KEYWORDS = r"shanghai|schanghai|china|上海|PVG"
 
 
@@ -141,7 +149,6 @@ def main():
         return 1
     client = None if args.dry_run else TravelpayoutsClient(token)
 
-    first_rss_run = not state_path(args.data_dir).exists()
     state = load_alert_state(args.data_dir)
 
     touched_routes = []
@@ -176,7 +183,7 @@ def main():
         feeds = [u.strip() for u in
                  os.getenv("RSS_FEEDS", DEFAULT_RSS_FEEDS).split(",") if u.strip()]
         keywords = re.compile(os.getenv("KEYWORDS", DEFAULT_KEYWORDS), re.I)
-        for item in check_rss(state, feeds, keywords, first_rss_run):
+        for item in check_rss(state, feeds, keywords):
             notify(f"\U0001f525 特价情报: {item['title'][:50]}",
                    f"{item['title']}\n{item['link']}", click_url=item["link"])
 

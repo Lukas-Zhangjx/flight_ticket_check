@@ -53,7 +53,8 @@
 - 请先查官方文档确认限流规则；在代码里统一做节流（建议默认 ≤ 1 请求/秒）和失败重试（最多 2 次）。
 
 ### 2.2 RSS 特价源
-- 默认：`https://www.secretflying.com/feed/`、`https://www.urlaubspiraten.de/feed`（地址需验证，失效则替换）。
+- 默认：`https://www.urlaubspiraten.de/feed`、`https://travel-dealz.de/feed/`、`https://www.fly4free.com/feed/`、`https://www.travelfree.info/feed/`（地址需验证，失效则替换；原先的 `secretflying.com/feed/` 已改为返回 HTML 页面，2026-11 替换掉）。
+- 新加入的源第一次抓取只记录、不推送（按源记录，避免把历史条目当成新特价一次性推出来）。
 - 只做：下载 → 解析 `<item>` → 按 guid 去重 → 关键词正则过滤 → 推送标题和链接。
 
 ### 2.3 「国际航线」判定
