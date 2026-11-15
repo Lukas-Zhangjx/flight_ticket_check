@@ -89,18 +89,37 @@ def fetch_route_dates(client, route, dry_run, today):
     return aggregate_entries(raw_entries, date_from, date_to), True
 
 
+MAX_ALERT_DETAIL_LINES = 8
+# ntfy rejects a publish over ~4 KB with HTTP 413 (seen in production on the
+# first run after the window widened to "from today": dozens of new lows,
+# each with a booking URL, and the whole push was dropped).
+MAX_ALERT_BYTES = 3500
+
+
 def format_price_alert(route, alerts):
-    lines = [f"✈️ {route['origin']}→{route['destination']} "
-             f"发现 {len(alerts)} 个新低价"]
-    for a in sorted(alerts, key=lambda x: x["departure_at"]):
-        lines.append(
-            f"去 {a['departure_at']}  {a['price']:.0f}€  "
-            f"{a['airline']}{a['flight_number'] or ''}  "
-            f"转机{a['transfers']}次\n"
-            f"https://www.aviasales.com{a['link']}")
-    lines.append("(缓存价，下单前请在官网/"
-                  "Google Flights确认)")
-    return "\n".join(lines)
+    cheapest_first = sorted(alerts, key=lambda x: x["price"])
+    details = [
+        f"去 {a['departure_at']}  {a['price']:.0f}€  "
+        f"{a['airline']}{a['flight_number'] or ''}  转机{a['transfers']}次\n"
+        f"https://www.aviasales.com{a['link']}"
+        for a in sorted(cheapest_first[:MAX_ALERT_DETAIL_LINES],
+                        key=lambda x: x["departure_at"])
+    ]
+
+    def assemble(detail_lines):
+        hidden = len(alerts) - len(detail_lines)
+        head = (f"\u2708\ufe0f {route['origin']}\u2192{route['destination']} "
+                f"发现 {len(alerts)} 个新低价"
+                + (f"（只列最便宜的 {len(detail_lines)} 个）" if hidden else ""))
+        tail = [f"另有 {hidden} 个日期也创新低，完整列表看网页。"] if hidden else []
+        tail.append("(缓存价，下单前去官网/Google Flights确认)")
+        return "\n".join([head] + detail_lines + tail)
+
+    text = assemble(details)
+    while len(text.encode("utf-8")) > MAX_ALERT_BYTES and details:
+        details = details[:-1]
+        text = assemble(details)
+    return text
 
 
 def main():
