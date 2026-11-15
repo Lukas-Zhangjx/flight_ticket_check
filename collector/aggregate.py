@@ -104,7 +104,7 @@ def regenerate_index(data_dir, watchlist):
             "id": route["id"],
             "origin": route["origin"],
             "destination": route["destination"],
-            "date_from": route["date_from"],
+            "date_from": route.get("date_from"),
             "date_to": route["date_to"],
             "max_price": route.get("max_price"),
             "enabled": route.get("enabled", True),

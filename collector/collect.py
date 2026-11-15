@@ -56,18 +56,28 @@ def load_watchlist(path):
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
-def fetch_route_dates(client, route, dry_run):
+def effective_date_from(route, today):
+    """A route without date_from means "from today": the user only picks the
+    departure date, and the monitored window slides forward every run."""
+    return route.get("date_from") or today
+
+
+def fetch_route_dates(client, route, dry_run, today):
     """Returns (dates_dict, ok). ok=False means every request for this
     route failed, so the caller must NOT write a snapshot (SPEC.md 10:
     a failed run must not write an empty snapshot or clobber good data)."""
+    date_from = effective_date_from(route, today)
+    date_to = route["date_to"]
+    if date_from > date_to:
+        return {}, True
+
     if dry_run:
-        raw = fake_entries_for_route(route["id"], route["date_from"],
-                                      route["date_to"])
-        return aggregate_entries(raw, route["date_from"], route["date_to"]), True
+        raw = fake_entries_for_route(route["id"], date_from, date_to)
+        return aggregate_entries(raw, date_from, date_to), True
 
     raw_entries = []
     any_success = False
-    for year_month in month_range(route["date_from"], route["date_to"]):
+    for year_month in month_range(date_from, date_to):
         try:
             raw_entries.extend(client.get_prices_for_month(
                 route["origin"], route["destination"], year_month))
@@ -76,7 +86,7 @@ def fetch_route_dates(client, route, dry_run):
             print(f"  {route['id']} {year_month}: fetch failed: {e}")
     if not any_success:
         return {}, False
-    return aggregate_entries(raw_entries, route["date_from"], route["date_to"]), True
+    return aggregate_entries(raw_entries, date_from, date_to), True
 
 
 def format_price_alert(route, alerts):
@@ -120,9 +130,9 @@ def main():
         if not route.get("enabled", True):
             print(f"{route['id']}: disabled, skipping")
             continue
-        print(f"{route['id']}: fetching {route['date_from']}..{route['date_to']}"
+        print(f"{route['id']}: fetching {effective_date_from(route, today)}..{route['date_to']}"
               f"{' (dry-run)' if args.dry_run else ''}")
-        dates_dict, ok = fetch_route_dates(client, route, args.dry_run)
+        dates_dict, ok = fetch_route_dates(client, route, args.dry_run, today)
         if not ok:
             print(f"{route['id']}: all requests failed, keeping prior data as-is")
             continue

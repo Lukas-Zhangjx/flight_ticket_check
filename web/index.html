@@ -88,6 +88,10 @@
 
 <div id="panelA" class="panel active">
   <div class="muted" id="rangeA"></div>
+  <div class="row">
+    <button id="refreshBtn">立即更新</button>
+    <span class="muted" id="refreshStatus"></span>
+  </div>
   <div class="airlines" id="airlinesA"></div>
   <div class="chart" id="chartA"></div>
   <div class="muted">点图上的点可以去订票，或者看这一天的历史价格走势</div>
@@ -116,10 +120,9 @@
       <input id="newDest" placeholder="目的地代码 如 BKK" maxlength="3" style="width:140px">
     </div>
     <div class="row">
-      <label class="muted">出发日期范围</label>
-      <input type="date" id="newDateFrom">
-      <span class="muted">~</span>
+      <label class="muted">起飞时间（最晚出发日期）</label>
       <input type="date" id="newDateTo">
+      <span class="muted">监控范围：从今天到这一天</span>
     </div>
     <div class="row">
       <input id="newMaxPrice" type="number" placeholder="价格上限€ (留空=无上限)" style="width:200px">
@@ -184,12 +187,18 @@ document.getElementById("saveAccessKey").addEventListener("click", () => {
 // Real-time query via the Worker (SPEC.md section 5's GET /prices), same
 // `dates` shape as a snapshot file so renderViewA doesn't care which one it got.
 // Returns null (not an error) when no access key is configured yet.
-async function fetchFromWorker(route) {
+function todayISO() { return new Date().toISOString().slice(0, 10); }
+// A route with no date_from is monitored "from today" - the user only picks
+// the departure date, and the window slides forward on its own.
+function effectiveFrom(route) { return route.date_from || todayISO(); }
+
+async function fetchFromWorker(route, { fresh = false } = {}) {
   const key = getAccessKey();
   if (!key) return null;
   const url = `${WORKER_URL}/prices?origin=${encodeURIComponent(route.origin)}`
     + `&destination=${encodeURIComponent(route.destination)}`
-    + `&from=${route.date_from}&to=${route.date_to}`;
+    + `&from=${effectiveFrom(route)}&to=${route.date_to}`
+    + (fresh ? "&fresh=1" : "");
   const resp = await fetch(url, { headers: { "X-Access-Key": key } });
   const body = await resp.json();
   if (!resp.ok) throw new Error(body.error || `worker HTTP ${resp.status}`);
@@ -236,7 +245,7 @@ function renderManagementList() {
     row.innerHTML = `
       <b>${route.origin} → ${route.destination}</b>
       <span class="muted">(${route.id})</span>
-      <span class="muted grow">${route.date_from} ~ ${route.date_to}</span>
+      <span class="muted grow">${route.date_from || "今天"} ~ ${route.date_to}</span>
       <label class="muted">上限€
         <input type="number" class="mgmt-maxprice" placeholder="无上限"
                value="${route.max_price != null ? route.max_price : ""}">
@@ -285,7 +294,6 @@ async function loadManagement() {
 document.getElementById("addRouteBtn").addEventListener("click", () => {
   const origin = document.getElementById("newOrigin").value.trim().toUpperCase();
   const dest = document.getElementById("newDest").value.trim().toUpperCase();
-  const dateFrom = document.getElementById("newDateFrom").value;
   const dateTo = document.getElementById("newDateTo").value;
   const maxPriceRaw = document.getElementById("newMaxPrice").value.trim();
 
@@ -293,8 +301,8 @@ document.getElementById("addRouteBtn").addEventListener("click", () => {
     mgmtStatus.textContent = "出发地/目的地要填 3 个字母的机场或城市代码";
     return;
   }
-  if (!dateFrom || !dateTo || dateFrom > dateTo) {
-    mgmtStatus.textContent = "日期范围不对";
+  if (!dateTo || dateTo < todayISO()) {
+    mgmtStatus.textContent = "起飞时间要选今天或之后的日期";
     return;
   }
   const id = `${origin}-${dest}`;
@@ -304,7 +312,7 @@ document.getElementById("addRouteBtn").addEventListener("click", () => {
   }
   managedRoutes.push({
     id, origin, destination: dest,
-    date_from: dateFrom, date_to: dateTo,
+    date_from: null, date_to: dateTo,
     max_price: maxPriceRaw === "" ? null : Number(maxPriceRaw),
     airlines: [],
     enabled: true,
@@ -353,7 +361,7 @@ function dateRange(fromISO, toISO) {
   return out;
 }
 
-function topAirlines(dates, priceOf, limit = 5) {
+function topAirlines(dates, priceOf, limit = 8) {
   const best = {};
   for (const d of dates) {
     const byAirline = priceOf(d);
@@ -454,14 +462,15 @@ function renderViewA() {
       : "无数据";
   }
   const capLabel = currentRoute.max_price != null ? `${currentRoute.max_price}€` : "无上限";
-  rangeEl.textContent = `监控区间 ${currentRoute.date_from} ~ ${currentRoute.date_to}`
+  const fromLabel = currentRoute.date_from || `今天(${todayISO()})`;
+  rangeEl.textContent = `监控区间 ${fromLabel} ~ ${currentRoute.date_to}`
     + ` · 价格上限 ${capLabel} · 数据来源: ${sourceLabel}`;
 
   if (!currentSnapshot) {
     chartEl.innerHTML = "<p class='muted'>还没有快照数据。</p>";
     return;
   }
-  const dates = dateRange(currentRoute.date_from, currentRoute.date_to);
+  const dates = dateRange(effectiveFrom(currentRoute), currentRoute.date_to);
   const byAirlineAt = (d) => {
     const day = currentSnapshot.dates[d];
     if (!day) return undefined;
@@ -622,16 +631,46 @@ async function loadRoute(routeId) {
     currentHistory = { departures: {} };
   }
 
-  depInput.min = currentRoute.date_from;
+  depInput.min = effectiveFrom(currentRoute);
   depInput.max = currentRoute.date_to;
   const depsWithData = Object.keys(currentHistory.departures || {}).sort();
-  depInput.value = depsWithData[0] || currentRoute.date_from;
+  depInput.value = depsWithData[0] || effectiveFrom(currentRoute);
 
   renderViewA();
   renderViewB();
 }
 depInput.addEventListener("change", renderViewB);
 routeSelect.addEventListener("change", () => loadRoute(routeSelect.value));
+
+// "立即更新": re-query the Worker with fresh=1 (skips its 1h edge cache, so
+// this really goes to Travelpayouts) and merge the result on top of the
+// accumulated map. Each click costs several real API calls, hence the cooldown.
+const refreshBtn = document.getElementById("refreshBtn");
+const refreshStatus = document.getElementById("refreshStatus");
+const REFRESH_COOLDOWN_MS = 60000;
+refreshBtn.addEventListener("click", async () => {
+  if (!currentRoute) return;
+  if (!getAccessKey()) {
+    refreshStatus.textContent = "需要先在“⚙ 设置”里填访问口令";
+    return;
+  }
+  refreshBtn.disabled = true;
+  refreshStatus.textContent = "正在向 Travelpayouts 拉最新数据…";
+  try {
+    const live = await fetchFromWorker(currentRoute, { fresh: true });
+    const liveDates = (live && live.dates) || {};
+    currentSnapshot = currentSnapshot || { dates: {} };
+    Object.assign(currentSnapshot.dates, liveDates);
+    const accumulated = (currentSnapshotSource || "accumulated:0").split(":")[1];
+    currentSnapshotSource = `worker+accumulated:${accumulated}`;
+    renderViewA();
+    refreshStatus.textContent = `已更新 ${new Date().toLocaleTimeString()}，`
+      + `这次实时拿到 ${Object.keys(liveDates).length} 天有价格（${REFRESH_COOLDOWN_MS / 1000}秒后可再更新）`;
+  } catch (e) {
+    refreshStatus.textContent = "更新失败: " + e.message;
+  }
+  setTimeout(() => { refreshBtn.disabled = false; }, REFRESH_COOLDOWN_MS);
+});
 
 async function main() {
   let index;

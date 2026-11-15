@@ -36,12 +36,21 @@ async function handlePrices(request, env, ctx) {
   if (intlError) return json({ error: intlError }, 400, env);
 
   // Cache the expensive part (Travelpayouts + aggregation) at the edge for an
-  // hour, keyed by the request URL - shared across every caller asking the
-  // same question, access-key check above still gates who gets an answer.
+  // hour, keyed only by the route+window - shared across every caller asking
+  // the same question, access-key check above still gates who gets an answer.
+  // `fresh=1` (the frontend's "立即更新" button) skips the lookup but still
+  // writes the result back, so a manual refresh renews the shared copy too.
   const cache = caches.default;
-  const cacheKey = new Request(url.toString(), { method: "GET" });
-  const cached = await cache.match(cacheKey);
-  if (cached) return cached;
+  const canonical = new URL(url.origin + url.pathname);
+  for (const k of ["origin", "destination", "from", "to"]) {
+    canonical.searchParams.set(k, url.searchParams.get(k));
+  }
+  const cacheKey = new Request(canonical.toString(), { method: "GET" });
+  const fresh = url.searchParams.get("fresh") === "1";
+  if (!fresh) {
+    const cached = await cache.match(cacheKey);
+    if (cached) return cached;
+  }
 
   let rawEntries = [];
   for (const yearMonth of monthRange(from, to)) {
@@ -79,8 +88,9 @@ async function handlePutWatchlist(request, env) {
   if (!Array.isArray(routes)) return json({ error: "请求体必须是航线数组" }, 400, env);
 
   for (const route of routes) {
-    if (!route.id || !route.origin || !route.destination
-        || !route.date_from || !route.date_to) {
+    // date_from is optional: absent/null means "from today" (the user only
+    // picks the departure date; the collector/frontend fill in today).
+    if (!route.id || !route.origin || !route.destination || !route.date_to) {
       return json({ error: `航线记录缺字段: ${JSON.stringify(route)}` }, 400, env);
     }
     const intlError = await checkInternational(route.origin, route.destination);
