@@ -1,6 +1,6 @@
 {
  "route_id": "SHA-MUC",
- "fetched_at": "2026-11-15T10:47+00:00",
+ "fetched_at": "2026-11-15T11:31+00:00",
  "currency": "EUR",
  "source": "travelpayouts-cache",
  "dates": {
@@ -289,70 +289,6 @@
      "price": 427,
      "flight_number": "281",
      "transfers": 1
-    }
-   }
-  },
-  "2027-01-01": {
-   "min": {
-    "price": 436,
-    "airline": "TK",
-    "flight_number": "281",
-    "transfers": 1,
-    "link": "/search/SHA0101MUC1?t=TK17987856001798839600001320PVGISTMUC_b54f67e6ab447e60f62cc479a2cbbf8e_39779&search_date=08112026&expected_price_uuid=01a1bace-43bd-8030-6897-a22ae57b2e4d&static_fare_key=TY%7CP1%7CH1%7CL1_1_23%7CCH0%7CR0%7CTBC1&itinerary_key=6v8otFQBzJ4QCWaUHwxJxA&expected_price_source=share&expected_price_currency=eur&expected_price=436"
-   },
-   "by_airline": {
-    "TK": {
-     "price": 436,
-     "flight_number": "281",
-     "transfers": 1
-    }
-   }
-  },
-  "2027-01-06": {
-   "min": {
-    "price": 436,
-    "airline": "TK",
-    "flight_number": "281",
-    "transfers": 1,
-    "link": "/search/SHA0601MUC1?t=TK17992293001799328600002075PVGISTMUC_252c9f9592ee22b3e6c802a9b7929869_39779&search_date=08112026&expected_price_uuid=01a1bace-0ed0-8030-2b8f-66e0cbe7b01d&static_fare_key=TY%7CP1%7CH1%7CL1_1_23%7CCH0%7CR0%7CTBC1&itinerary_key=I2713lsguxqDNqH-zj6zMQ&expected_price_source=share&expected_price_currency=eur&expected_price=436"
-   },
-   "by_airline": {
-    "TK": {
-     "price": 436,
-     "flight_number": "281",
-     "transfers": 1
-    }
-   }
-  },
-  "2027-01-04": {
-   "min": {
-    "price": 461,
-    "airline": "TK",
-    "flight_number": "281",
-    "transfers": 1,
-    "link": "/search/SHA0401MUC1?t=TK17990475001799098800001275PVGISTMUC_32a397829407be7e14676138c81d3346_42079&search_date=08112026&expected_price_uuid=01a1bace-6eea-8030-2e92-ca12633e2f62&static_fare_key=TY%7CP1%7CH1%7CL1_1_23%7CCH0%7CR0%7CTBC1&itinerary_key=vJQ2bOt8jlDbyR_PbBP_EQ&expected_price_source=share&expected_price_currency=eur&expected_price=461"
-   },
-   "by_airline": {
-    "TK": {
-     "price": 461,
-     "flight_number": "281",
-     "transfers": 1
-    }
-   }
-  },
-  "2027-01-08": {
-   "min": {
-    "price": 588,
-    "airline": "DV",
-    "flight_number": "808",
-    "transfers": 3,
-    "link": "/search/SHA0801MUC1?t=DV17993880001799484300002025PVGCITISTBEGMUC_2da8bd6f922a1ebee84d48895b57c7a0_53689&search_date=08112026&expected_price_uuid=01a1bace-8d53-8031-2ead-a180f64117ba&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=LeZpHFxoZYPmS-Pk48OBkQ&expected_price_source=share&expected_price_currency=eur&expected_price=588"
-   },
-   "by_airline": {
-    "DV": {
-     "price": 588,
-     "flight_number": "808",
-     "transfers": 3
     }
    }
   },
