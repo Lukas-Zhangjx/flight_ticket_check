@@ -5,13 +5,55 @@
    "2027-01-10": 386,
    "2027-01-11": 387,
    "2027-01-12": 387,
-   "2027-03-10": 395
+   "2027-03-10": 395,
+   "2026-11-17": 429,
+   "2026-11-18": 377,
+   "2026-11-20": 377,
+   "2026-11-21": 359,
+   "2026-11-22": 495,
+   "2026-11-23": 393,
+   "2026-11-24": 386,
+   "2026-11-28": 406,
+   "2026-11-29": 336,
+   "2026-11-30": 388,
+   "2026-12-01": 386,
+   "2026-12-07": 422,
+   "2026-12-08": 360,
+   "2026-12-09": 396,
+   "2026-12-10": 373,
+   "2026-12-11": 409,
+   "2026-12-14": 437,
+   "2026-12-15": 409,
+   "2026-12-18": 562,
+   "2026-12-22": 520,
+   "2026-12-23": 571,
+   "2026-12-24": 574,
+   "2026-12-27": 477
   },
   "SHA-MUC": {
    "2027-04-04": 345,
    "2027-01-17": 342,
    "2027-01-15": 394,
-   "2027-01-18": 401
+   "2027-01-18": 401,
+   "2026-11-15": 442,
+   "2026-11-16": 360,
+   "2026-11-17": 366,
+   "2026-11-18": 380,
+   "2026-11-19": 389,
+   "2026-11-21": 406,
+   "2026-11-22": 391,
+   "2026-11-24": 395,
+   "2026-11-26": 443,
+   "2026-11-27": 377,
+   "2026-11-28": 360,
+   "2026-11-29": 403,
+   "2026-12-05": 367,
+   "2026-12-22": 358,
+   "2027-01-01": 436,
+   "2027-01-03": 427,
+   "2027-01-04": 461,
+   "2027-01-06": 436,
+   "2027-01-08": 588
   }
  },
  "seen_rss": [
@@ -145,6 +187,9 @@
   "https://www.urlaubspiraten.de/hotels/bergparadies-dorfgastein",
   "https://www.urlaubspiraten.de/hotels/hotel-wilder-mann-meersburg",
   "https://www.urlaubspiraten.de/sonstiges/direktverbindung-berlin-paris",
-  "https://www.urlaubspiraten.de/reise-journal/der-erste-all-inclusive-weihnachtsmarkt-deutschlands"
+  "https://www.urlaubspiraten.de/reise-journal/der-erste-all-inclusive-weihnachtsmarkt-deutschlands",
+  "https://www.urlaubspiraten.de/pauschalreisen/bergen-magic-hotel-solheimsviken",
+  "https://www.urlaubspiraten.de/hotels/hilton-heidelberg",
+  "https://www.urlaubspiraten.de/pauschalreisen/islands-naturphaenomene-hautnah-erleben-vivido"
  ]
 }
