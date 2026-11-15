@@ -36,7 +36,7 @@
    "2027-01-15": 394,
    "2027-01-18": 401,
    "2026-11-15": 442,
-   "2026-11-16": 360,
+   "2026-11-16": 349,
    "2026-11-17": 366,
    "2026-11-18": 380,
    "2026-11-19": 389,
@@ -53,7 +53,9 @@
    "2027-01-03": 427,
    "2027-01-04": 461,
    "2027-01-06": 436,
-   "2027-01-08": 588
+   "2027-01-08": 588,
+   "2026-11-25": 308,
+   "2027-01-30": 466
   }
  },
  "seen_rss": [
@@ -322,7 +324,21 @@
   "https://travel-dealz.de/?post_type=deal&p=325738#478208",
   "https://www.fly4free.com/?p=780688",
   "https://www.fly4free.com/?p=780679",
-  "https://www.fly4free.com/?p=780696"
+  "https://www.fly4free.com/?p=780696",
+  "https://www.urlaubspiraten.de/kreuzfahrten/sapphire-princess-japan",
+  "https://www.urlaubspiraten.de/pauschalreisen/2-for-1-best-of-vietnam",
+  "https://www.urlaubspiraten.de/hotels/deutschland-parkhotel-emstaler-hohe",
+  "https://www.fly4free.com/?p=780751",
+  "https://www.fly4free.com/?p=780744",
+  "https://www.fly4free.com/?p=780733",
+  "https://www.fly4free.com/?p=780726",
+  "https://www.fly4free.com/?p=780717",
+  "https://www.fly4free.com/?p=780146",
+  "https://www.fly4free.com/?p=780708",
+  "https://www.fly4free.com/?p=780703",
+  "https://travelfree.info/?p=66255",
+  "https://travelfree.info/?p=142712",
+  "https://travelfree.info/?p=272886"
  ],
  "seen_feeds": [
   "https://www.urlaubspiraten.de/feed",
