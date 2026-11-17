@@ -30,7 +30,10 @@
    "2026-12-24": 574,
    "2026-12-27": 477,
    "2026-12-21": 532,
-   "2027-01-02": 557
+   "2027-01-02": 557,
+   "2026-11-25": 412,
+   "2026-12-05": 395,
+   "2027-03-01": 483
   },
   "SHA-MUC": {
    "2027-04-04": 340,
@@ -57,7 +60,8 @@
    "2027-01-06": 436,
    "2027-01-08": 588,
    "2026-11-25": 308,
-   "2027-01-30": 466
+   "2027-01-30": 466,
+   "2026-12-01": 409
   }
  },
  "seen_rss": [
@@ -378,7 +382,21 @@
   "https://travelfree.info/?p=309318",
   "https://travelfree.info/?p=244283",
   "https://travelfree.info/?p=33565",
-  "https://travelfree.info/?p=306760"
+  "https://travelfree.info/?p=306760",
+  "https://www.urlaubspiraten.de/pauschalreisen/neuseeland-abenteuerreise-ans-andere-ende-der-welt",
+  "https://www.urlaubspiraten.de/hotels/das-james-flensburg",
+  "https://www.urlaubspiraten.de/pauschalreisen/mietwagen-special-vivido",
+  "https://www.urlaubspiraten.de/pauschalreisen/white-and-blue-essaouira-marokko",
+  "https://www.fly4free.com/?p=780894",
+  "https://www.fly4free.com/?p=780889",
+  "https://www.fly4free.com/?p=780872",
+  "https://www.fly4free.com/?p=780849",
+  "https://www.fly4free.com/?p=780851",
+  "https://travelfree.info/?p=166451",
+  "https://travelfree.info/?p=309423",
+  "https://travelfree.info/?p=309409",
+  "https://travelfree.info/?p=87789",
+  "https://travelfree.info/?p=304403"
  ],
  "seen_feeds": [
   "https://www.urlaubspiraten.de/feed",
