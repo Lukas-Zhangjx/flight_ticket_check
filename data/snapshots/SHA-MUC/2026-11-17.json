@@ -1,6 +1,6 @@
 {
  "route_id": "SHA-MUC",
- "fetched_at": "2026-11-17T01:51+00:00",
+ "fetched_at": "2026-11-17T16:10+00:00",
  "currency": "EUR",
  "source": "travelpayouts-cache",
  "dates": {
@@ -118,16 +118,16 @@
   },
   "2026-11-24": {
    "min": {
-    "price": 415,
-    "airline": "DV",
-    "flight_number": "808",
+    "price": 441,
+    "airline": "MF",
+    "flight_number": "8522",
     "transfers": 2,
-    "link": "/search/SHA2411MUC1?t=DV17955000001795598400002060PVGCITISTSAWMUC_ae64d21324f93f3b417e5eb4fa3ade31_37687&search_date=16112026&expected_price_uuid=01a1e4d7-8666-8031-2e8d-fc8c09286b4a&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=K9gSdPO-bTWWGvCWfuLg-Q&expected_price_source=share&expected_price_currency=eur&expected_price=415"
+    "link": "/search/SHA2411MUC1?t=MF17955366001795638000002110SHAXMNLHRSENMUC_a2bfac03cb9ca1b58c5fb93a5c24f1fb_39941&search_date=17112026&expected_price_uuid=01a1e9ce-d620-8030-e143-8c0dc7ad0bcf&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=MxRNNF0YU200DuzHs8Hm2A&expected_price_source=share&expected_price_currency=eur&expected_price=441"
    },
    "by_airline": {
-    "DV": {
-     "price": 415,
-     "flight_number": "808",
+    "MF": {
+     "price": 441,
+     "flight_number": "8522",
      "transfers": 2
     }
    }
