@@ -1,6 +1,6 @@
 {
  "route_id": "SHA-MUC",
- "fetched_at": "2026-11-18T00:57+00:00",
+ "fetched_at": "2026-11-18T15:46+00:00",
  "currency": "EUR",
  "source": "travelpayouts-cache",
  "dates": {
@@ -100,35 +100,19 @@
     }
    }
   },
-  "2026-11-21": {
+  "2026-11-24": {
    "min": {
-    "price": 406,
+    "price": 426,
     "airline": "TG",
-    "flight_number": "663",
+    "flight_number": "665",
     "transfers": 1,
-    "link": "/search/SHA2111MUC1?t=TG17952489001795329900001770PVGBKKMUC_d6ec4a751e1d97c372afdf59da8d2302_37429&search_date=11112026&expected_price_uuid=01a1c842-61dd-8031-2bb1-ce8f54cf3466&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=91UBi-Z2Fz6AAPEX5wbQZA&expected_price_source=share&expected_price_currency=eur&expected_price=406"
+    "link": "/search/SHA2411MUC1?t=TG17955405001795589100001230PVGBKKMUC_3b874867ab82b5554ee0a744a760d9b0_38464&search_date=18112026&expected_price_uuid=01a1ee94-3e29-8030-2cae-2e41a6867c6d&static_fare_key=TY%7CP1%7CH1%7CL1_1_23%7CCH0%7CR0%7CTBC1&itinerary_key=fspQmMprOkp0wuXMQaFTvA&expected_price_source=share&expected_price_currency=eur&expected_price=426"
    },
    "by_airline": {
     "TG": {
-     "price": 406,
-     "flight_number": "663",
+     "price": 426,
+     "flight_number": "665",
      "transfers": 1
-    }
-   }
-  },
-  "2026-11-24": {
-   "min": {
-    "price": 440,
-    "airline": "MF",
-    "flight_number": "8522",
-    "transfers": 2,
-    "link": "/search/SHA2411MUC1?t=MF17955366001795638000002110SHAXMNLHRSENMUC_a2bfac03cb9ca1b58c5fb93a5c24f1fb_39941&search_date=17112026&expected_price_uuid=01a1e9ce-d620-8030-e143-8c0dc7ad0bcf&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=MxRNNF0YU200DuzHs8Hm2A&expected_price_source=share&expected_price_currency=eur&expected_price=440"
-   },
-   "by_airline": {
-    "MF": {
-     "price": 440,
-     "flight_number": "8522",
-     "transfers": 2
     }
    }
   },
