@@ -1,6 +1,6 @@
 {
  "route_id": "SHA-MUC",
- "fetched_at": "2026-11-20T00:37+00:00",
+ "fetched_at": "2026-11-20T15:34+00:00",
  "currency": "EUR",
  "source": "travelpayouts-cache",
  "dates": {
@@ -15,6 +15,22 @@
    "by_airline": {
     "D7": {
      "price": 308,
+     "flight_number": "331",
+     "transfers": 2
+    }
+   }
+  },
+  "2026-11-30": {
+   "min": {
+    "price": 314,
+    "airline": "D7",
+    "flight_number": "331",
+    "transfers": 2,
+    "link": "/search/SHA3011MUC1?t=D717960025001796130000002545PVGKULSAWMUC_17d2960313504cec7c3cf7467d517a03_28324&search_date=20112026&expected_price_uuid=01a1f8ee-6e2c-8031-273b-f648ca3cc50c&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=RUT1cB4h8xVsYa6kILjX6Q&expected_price_source=share&expected_price_currency=eur&expected_price=314"
+   },
+   "by_airline": {
+    "D7": {
+     "price": 314,
      "flight_number": "331",
      "transfers": 2
     }
@@ -129,22 +145,6 @@
      "price": 358,
      "flight_number": "8518",
      "transfers": 3
-    }
-   }
-  },
-  "2026-12-05": {
-   "min": {
-    "price": 367,
-    "airline": "3U",
-    "flight_number": "6996",
-    "transfers": 2,
-    "link": "/search/SHA0512MUC1?t=3U17964963001796576100001750PVGTFUISTSAWMUC_ec0f15952fba48c825192cfed7288ae0_33503&search_date=13112026&expected_price_uuid=01a1d32c-a020-8030-ebf3-3c3f388b3435&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=uF3QzVlGC4peIwm4mVc3lg&expected_price_source=share&expected_price_currency=eur&expected_price=367"
-   },
-   "by_airline": {
-    "3U": {
-     "price": 367,
-     "flight_number": "6996",
-     "transfers": 2
     }
    }
   },

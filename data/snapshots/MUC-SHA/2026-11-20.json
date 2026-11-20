@@ -1,6 +1,6 @@
 {
  "route_id": "MUC-SHA",
- "fetched_at": "2026-11-20T00:37+00:00",
+ "fetched_at": "2026-11-20T15:34+00:00",
  "currency": "EUR",
  "source": "travelpayouts-cache",
  "dates": {
@@ -214,16 +214,16 @@
   },
   "2026-12-06": {
    "min": {
-    "price": 401,
+    "price": 400,
     "airline": "PC",
-    "flight_number": "1020",
+    "flight_number": "1022",
     "transfers": 3,
-    "link": "/search/MUC0612SHA1?t=PC17965539001796674500001590MUCSAWBSZURCSHA_44f3e3c7d8cc1833057dc064aba2c87d_36168&search_date=17112026&expected_price_uuid=01a1ea0e-db55-8031-6a10-49021300d600&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=r8xFNveDRFZEfCHvL0rG2Q&expected_price_source=share&expected_price_currency=eur&expected_price=401"
+    "link": "/search/MUC0612SHA1?t=PC17965680001796674500001355MUCSAWBSZURCSHA_ae850b16a5b3e4f17d97388fd5346879_36019&search_date=20112026&expected_price_uuid=01a1f945-22ed-8031-66ad-9a432cb18793&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Cop9AZd-MbPXvySRC0kFVw&expected_price_source=share&expected_price_currency=eur&expected_price=400"
    },
    "by_airline": {
     "PC": {
-     "price": 401,
-     "flight_number": "1020",
+     "price": 400,
+     "flight_number": "1022",
      "transfers": 3
     }
    }
