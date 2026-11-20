@@ -1,6 +1,6 @@
 {
  "route_id": "SHA-MUC",
- "fetched_at": "2026-11-20T15:34+00:00",
+ "fetched_at": "2026-11-20T23:59+00:00",
  "currency": "EUR",
  "source": "travelpayouts-cache",
  "dates": {
@@ -22,65 +22,17 @@
   },
   "2026-11-30": {
    "min": {
-    "price": 314,
+    "price": 316,
     "airline": "D7",
     "flight_number": "331",
     "transfers": 2,
-    "link": "/search/SHA3011MUC1?t=D717960025001796130000002545PVGKULSAWMUC_17d2960313504cec7c3cf7467d517a03_28324&search_date=20112026&expected_price_uuid=01a1f8ee-6e2c-8031-273b-f648ca3cc50c&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=RUT1cB4h8xVsYa6kILjX6Q&expected_price_source=share&expected_price_currency=eur&expected_price=314"
+    "link": "/search/SHA3011MUC1?t=D717960025001796130000002545PVGKULSAWMUC_17d2960313504cec7c3cf7467d517a03_28478&search_date=20112026&expected_price_uuid=01a1fa4d-9351-8030-6145-0388e4d55753&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=RUT1cB4h8xVsYa6kILjX6Q&expected_price_source=share&expected_price_currency=eur&expected_price=316"
    },
    "by_airline": {
     "D7": {
-     "price": 314,
+     "price": 316,
      "flight_number": "331",
      "transfers": 2
-    }
-   }
-  },
-  "2026-11-28": {
-   "min": {
-    "price": 360,
-    "airline": "9C",
-    "flight_number": "7677",
-    "transfers": 2,
-    "link": "/search/SHA2811MUC1?t=WY17958618001795978800002370PVGSINMCTMUC_804155fb3d5781c5722ddd14a74d925c_32832&search_date=13112026&expected_price_uuid=01a1d739-e800-8030-6a56-453c93e76a0b&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=gb0HyBLL69tnDAR7tVHj5Q&expected_price_source=share&expected_price_currency=eur&expected_price=360"
-   },
-   "by_airline": {
-    "9C": {
-     "price": 360,
-     "flight_number": "7677",
-     "transfers": 2
-    }
-   }
-  },
-  "2026-11-27": {
-   "min": {
-    "price": 377,
-    "airline": "9C",
-    "flight_number": "8551",
-    "transfers": 2,
-    "link": "/search/SHA2711MUC1?t=WY17958222001795978800003030PVGSINMCTMUC_52bf00dd40dea13b028effb8fa5460f8_34457&search_date=13112026&expected_price_uuid=01a1d746-3e3b-8040-2d9c-c16e4f395c40&static_fare_key=TY%7CP1%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=nSy-E45QDStOila2EDI1Tw&expected_price_source=share&expected_price_currency=eur&expected_price=377"
-   },
-   "by_airline": {
-    "9C": {
-     "price": 377,
-     "flight_number": "8551",
-     "transfers": 2
-    }
-   }
-  },
-  "2026-11-22": {
-   "min": {
-    "price": 391,
-    "airline": "CX",
-    "flight_number": "303",
-    "transfers": 1,
-    "link": "/search/SHA2211MUC1?t=CX17953314001795419300001885PVGHKGMUC_023897c6e2b5b53d5f4ac12911981f7f_35644&search_date=13112026&expected_price_uuid=01a1d6dd-2e69-8031-2c2a-050a43997963&static_fare_key=TY%7CP1%7CH1%7CL1_1_23%7CCH0%7CR0%7CTBC1&itinerary_key=CxoFXCNMOUQnj3avWZ5NQQ&expected_price_source=share&expected_price_currency=eur&expected_price=391"
-   },
-   "by_airline": {
-    "CX": {
-     "price": 391,
-     "flight_number": "303",
-     "transfers": 1
     }
    }
   },
@@ -132,19 +84,19 @@
     }
    }
   },
-  "2026-12-22": {
+  "2026-12-06": {
    "min": {
-    "price": 358,
-    "airline": "MF",
-    "flight_number": "8518",
-    "transfers": 3,
-    "link": "/search/SHA2212MUC1?t=CA17979234001798094100003265SHAXMNHANPEKMUC_1528b15bdb43928ca4f294bdeb02c2c3_32641&search_date=13112026&expected_price_uuid=01a1d6cd-5e87-8031-646c-ab4db9706b00&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=84Iw9vE9f9o2KrHU_RkvJA&expected_price_source=share&expected_price_currency=eur&expected_price=358"
+    "price": 302,
+    "airline": "D7",
+    "flight_number": "331",
+    "transfers": 2,
+    "link": "/search/SHA0612MUC1?t=D717965209001796630700002250PVGKULSAWMUC_0c68062d2ab4a2e1cc3df8b0ce1648ac_27106&search_date=20112026&expected_price_uuid=01a1f9a4-d0c8-8030-2219-f85ac12001f5&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=jWdi2M5TMYAqlLKvlp_WbA&expected_price_source=share&expected_price_currency=eur&expected_price=302"
    },
    "by_airline": {
-    "MF": {
-     "price": 358,
-     "flight_number": "8518",
-     "transfers": 3
+    "D7": {
+     "price": 302,
+     "flight_number": "331",
+     "transfers": 2
     }
    }
   },
