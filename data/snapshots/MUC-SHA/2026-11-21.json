@@ -1,0 +1,344 @@
+{
+ "route_id": "MUC-SHA",
+ "fetched_at": "2026-11-21T14:45+00:00",
+ "currency": "EUR",
+ "source": "travelpayouts-cache",
+ "dates": {
+  "2026-11-29": {
+   "min": {
+    "price": 336,
+    "airline": "CA",
+    "flight_number": "828",
+    "transfers": 0,
+    "link": "/search/MUC2911SHA1?t=CA17959506001796015400000660MUCPVG_9f95afecb7d057dd5587d3aff966010d_30646&search_date=16112026&expected_price_uuid=01a1e260-d4a2-8030-e419-e5b69541f68c&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH1%7CR0%7CTBC0&itinerary_key=l07FSm1JPk2PiJDz2U-8kA&expected_price_source=share&expected_price_currency=eur&expected_price=336"
+   },
+   "by_airline": {
+    "CA": {
+     "price": 336,
+     "flight_number": "828",
+     "transfers": 0
+    }
+   }
+  },
+  "2026-11-23": {
+   "min": {
+    "price": 407,
+    "airline": "VF",
+    "flight_number": "42",
+    "transfers": 3,
+    "link": "/search/MUC2311SHA1?t=VF17954412001795551300001415MUCSAWBSZURCSHA_cec9a9b2c000a30e1a75ca2cc2ca06e9_37016&search_date=17112026&expected_price_uuid=01a1e7c6-7f84-8031-65ad-94c7565ad0e7&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=jTtnbX7xbooccisWSWHlMQ&expected_price_source=share&expected_price_currency=eur&expected_price=407"
+   },
+   "by_airline": {
+    "VF": {
+     "price": 407,
+     "flight_number": "42",
+     "transfers": 3
+    }
+   }
+  },
+  "2026-11-25": {
+   "min": {
+    "price": 412,
+    "airline": "VF",
+    "flight_number": "42",
+    "transfers": 3,
+    "link": "/search/MUC2511SHA1?t=VF17956140001795724100001415MUCSAWBSZURCSHA_85b8e5d525683cb040d1b87cc658d8a2_37415&search_date=16112026&expected_price_uuid=01a1e688-49b3-8030-2d28-7b96bbfabb0b&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=jTtnbX7xbooccisWSWHlMQ&expected_price_source=share&expected_price_currency=eur&expected_price=412"
+   },
+   "by_airline": {
+    "VF": {
+     "price": 412,
+     "flight_number": "42",
+     "transfers": 3
+    }
+   }
+  },
+  "2026-12-10": {
+   "min": {
+    "price": 372,
+    "airline": "VF",
+    "flight_number": "42",
+    "transfers": 3,
+    "link": "/search/MUC1012SHA1?t=VF17969100001797020100001415MUCSAWBSZURCSHA_a9e49d2b5b38b4c6740bd94c5e33864d_33643&search_date=18112026&expected_price_uuid=01a1f10d-496d-8030-2e91-384bdf7acdc2&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=eK5NMpEP8xVXlMYFREmsnw&expected_price_source=share&expected_price_currency=eur&expected_price=372"
+   },
+   "by_airline": {
+    "VF": {
+     "price": 372,
+     "flight_number": "42",
+     "transfers": 3
+    }
+   }
+  },
+  "2026-12-01": {
+   "min": {
+    "price": 386,
+    "airline": "PC",
+    "flight_number": "1020",
+    "transfers": 2,
+    "link": "/search/MUC0112SHA1?t=CZ17961207001796242500001610MUCSAWISTURCSHA_42382b2dd0645486f7497224e24dd849_35270&search_date=14112026&expected_price_uuid=01a1dc7b-fdc5-8030-29b9-14b3e0f24b4a&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=NqBz7ptUwyByOk9YBwuDzQ&expected_price_source=share&expected_price_currency=eur&expected_price=386"
+   },
+   "by_airline": {
+    "PC": {
+     "price": 386,
+     "flight_number": "1020",
+     "transfers": 2
+    }
+   }
+  },
+  "2026-12-09": {
+   "min": {
+    "price": 392,
+    "airline": "VF",
+    "flight_number": "042",
+    "transfers": 3,
+    "link": "/search/MUC0912SHA1?t=CZ17968236001797001500002545MUCSAWBSZURCPVG_7cc6c59ed18bdd30b6a1d29ccbe00e2c_35602&search_date=17112026&expected_price_uuid=01a1e78c-f34c-8031-27af-d0a6e65caa78&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=pOtgr_l137OJBIb5qhAP1g&expected_price_source=share&expected_price_currency=eur&expected_price=392"
+   },
+   "by_airline": {
+    "VF": {
+     "price": 392,
+     "flight_number": "042",
+     "transfers": 3
+    }
+   }
+  },
+  "2026-12-05": {
+   "min": {
+    "price": 401,
+    "airline": "PC",
+    "flight_number": "1020",
+    "transfers": 3,
+    "link": "/search/MUC0512SHA1?t=PC17964675001796588100001590MUCSAWBSZURCSHA_10bb78f22a949ddea74302d5850ce204_36019&search_date=20112026&expected_price_uuid=01a1f9f7-41bf-8030-248e-cb657a3d2331&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=-jt1N_0HoNCKJghuixePvw&expected_price_source=share&expected_price_currency=eur&expected_price=401"
+   },
+   "by_airline": {
+    "PC": {
+     "price": 401,
+     "flight_number": "1020",
+     "transfers": 3
+    }
+   }
+  },
+  "2026-12-06": {
+   "min": {
+    "price": 401,
+    "airline": "PC",
+    "flight_number": "1022",
+    "transfers": 3,
+    "link": "/search/MUC0612SHA1?t=PC17965680001796674500001355MUCSAWBSZURCSHA_ae850b16a5b3e4f17d97388fd5346879_36019&search_date=20112026&expected_price_uuid=01a1f9f7-d06a-8030-613e-d6f51cb706be&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Cop9AZd-MbPXvySRC0kFVw&expected_price_source=share&expected_price_currency=eur&expected_price=401"
+   },
+   "by_airline": {
+    "PC": {
+     "price": 401,
+     "flight_number": "1022",
+     "transfers": 3
+    }
+   }
+  },
+  "2026-12-02": {
+   "min": {
+    "price": 402,
+    "airline": "VF",
+    "flight_number": "42",
+    "transfers": 2,
+    "link": "/search/MUC0212SHA1?t=CZ17962188001796382600002310MUCSAWISTPKXSHA_bd2f3bc007609e77dc3d52859aa9379b_36370&search_date=19112026&expected_price_uuid=01a1f160-4311-8040-a51b-7be46f8d4e19&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH1%7CR0%7CTBC0&itinerary_key=6U1dmjmUttE8ehJD6dQl8Q&expected_price_source=share&expected_price_currency=eur&expected_price=402"
+   },
+   "by_airline": {
+    "VF": {
+     "price": 402,
+     "flight_number": "42",
+     "transfers": 2
+    }
+   }
+  },
+  "2026-12-14": {
+   "min": {
+    "price": 437,
+    "airline": "VF",
+    "flight_number": "42",
+    "transfers": 3,
+    "link": "/search/MUC1412SHA1?t=VF17972556001797365700001415MUCSAWBSZURCSHA_23d30d3b294ebc29562dea71625d609d_39924&search_date=14112026&expected_price_uuid=01a1db27-29a2-8031-2c19-22e658fbd503&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=jTtnbX7xbooccisWSWHlMQ&expected_price_source=share&expected_price_currency=eur&expected_price=437"
+   },
+   "by_airline": {
+    "VF": {
+     "price": 437,
+     "flight_number": "42",
+     "transfers": 3
+    }
+   }
+  },
+  "2026-12-17": {
+   "min": {
+    "price": 479,
+    "airline": "XQ",
+    "flight_number": "131",
+    "transfers": 3,
+    "link": "/search/MUC1712SHA1?t=PC17975130001797624900001445MUCAYTBSZURCSHA_40bf32a6ee41bf6836596869f615f6b6_43559&search_date=17112026&expected_price_uuid=01a1e9de-2985-8040-a030-89b1b014cc26&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=9Eth_iI_BmfJU0XY9ZVc8Q&expected_price_source=share&expected_price_currency=eur&expected_price=479"
+   },
+   "by_airline": {
+    "XQ": {
+     "price": 479,
+     "flight_number": "131",
+     "transfers": 3
+    }
+   }
+  },
+  "2026-12-19": {
+   "min": {
+    "price": 503,
+    "airline": "PC",
+    "flight_number": "1026",
+    "transfers": 3,
+    "link": "/search/MUC1912SHA1?t=PC17976720001797797700001675MUCSAWBSZURCSHA_5017a9c0fddd6b7b5bf9de994a84bcb2_45242&search_date=19112026&expected_price_uuid=01a1f490-85b0-8031-6028-3aa7c1fc9312&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=qFETtKMiRJbUNcVzsIiAKg&expected_price_source=share&expected_price_currency=eur&expected_price=503"
+   },
+   "by_airline": {
+    "PC": {
+     "price": 503,
+     "flight_number": "1026",
+     "transfers": 3
+    }
+   }
+  },
+  "2026-12-27": {
+   "min": {
+    "price": 516,
+    "airline": "VF",
+    "flight_number": "42",
+    "transfers": 3,
+    "link": "/search/MUC2712SHA1?t=VF17983788001798566600002710MUCSAWBSZURCPVG_4044704b365809161af4f6f6fa7c88a3_46918&search_date=17112026&expected_price_uuid=01a1e797-dd06-8030-63b0-96fec4fbc0af&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=L8we1JJuEGz8RMGWonxmng&expected_price_source=share&expected_price_currency=eur&expected_price=516"
+   },
+   "by_airline": {
+    "VF": {
+     "price": 516,
+     "flight_number": "42",
+     "transfers": 3
+    }
+   }
+  },
+  "2026-12-18": {
+   "min": {
+    "price": 527,
+    "airline": "PC",
+    "flight_number": "1022",
+    "transfers": 3,
+    "link": "/search/MUC1812SHA1?t=PC17976048001797797700002795MUCSAWBSZURCSHA_c0d74f8c3acfac1d19267db95393fcdc_47483&search_date=19112026&expected_price_uuid=01a1f490-63bb-8030-2426-91e978f9ed93&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=3Q9q543PyiLAp7YinaBJlQ&expected_price_source=share&expected_price_currency=eur&expected_price=527"
+   },
+   "by_airline": {
+    "PC": {
+     "price": 527,
+     "flight_number": "1022",
+     "transfers": 3
+    }
+   }
+  },
+  "2026-12-26": {
+   "min": {
+    "price": 532,
+    "airline": "PC",
+    "flight_number": "1022",
+    "transfers": 3,
+    "link": "/search/MUC2612SHA1?t=PC17982960001798402500001355MUCSAWBSZURCSHA_b62014b0b6bb7a91424622178cc0d81f_48405&search_date=17112026&expected_price_uuid=01a1e7a6-ec5d-8031-2e66-818bfdccb4a1&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=Cop9AZd-MbPXvySRC0kFVw&expected_price_source=share&expected_price_currency=eur&expected_price=532"
+   },
+   "by_airline": {
+    "PC": {
+     "price": 532,
+     "flight_number": "1022",
+     "transfers": 3
+    }
+   }
+  },
+  "2026-12-21": {
+   "min": {
+    "price": 533,
+    "airline": "PC",
+    "flight_number": "1022",
+    "transfers": 3,
+    "link": "/search/MUC2112SHA1?t=PC17978640001797970500001355MUCSAWBSZURCSHA_c71639591bf2314112378a0e0d47ef82_48525&search_date=16112026&expected_price_uuid=01a1e1c8-0784-8030-a222-507399b88a23&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=p_C2nG7W8lVgUVE2brw6hw&expected_price_source=share&expected_price_currency=eur&expected_price=533"
+   },
+   "by_airline": {
+    "PC": {
+     "price": 533,
+     "flight_number": "1022",
+     "transfers": 3
+    }
+   }
+  },
+  "2026-12-23": {
+   "min": {
+    "price": 554,
+    "airline": "DE",
+    "flight_number": "4065",
+    "transfers": 3,
+    "link": "/search/MUC2312SHA1?t=HU17980443001798199700002170MUCFRACDGXIYPVG_9961906195d1c2a06407417027903f88_50358&search_date=17112026&expected_price_uuid=01a1e7cd-727d-8031-6d0c-839f7d0e46b7&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=LzoJcad-P39YExOcsruH1Q&expected_price_source=share&expected_price_currency=eur&expected_price=554"
+   },
+   "by_airline": {
+    "DE": {
+     "price": 554,
+     "flight_number": "4065",
+     "transfers": 3
+    }
+   }
+  },
+  "2026-12-24": {
+   "min": {
+    "price": 573,
+    "airline": "LH",
+    "flight_number": "2306",
+    "transfers": 2,
+    "link": "/search/MUC2412SHA1?t=CZ17981262001798278300002115MUCAMSPKXPVG_c19ad75885bf8e818d290221719e9f27_52117&search_date=17112026&expected_price_uuid=01a1e7d0-86f2-8040-ac0b-29539aee7a7e&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=PyAuA6uKCmSqoI2P3iQhvw&expected_price_source=share&expected_price_currency=eur&expected_price=573"
+   },
+   "by_airline": {
+    "LH": {
+     "price": 573,
+     "flight_number": "2306",
+     "transfers": 2
+    }
+   }
+  },
+  "2027-01-12": {
+   "min": {
+    "price": 413,
+    "airline": "PC",
+    "flight_number": "1022",
+    "transfers": 2,
+    "link": "/search/MUC1201SHA1?t=CZ17997630001799871300001385MUCSAWISTURCSHA_1783ec788d4df7e584012f22bbd88d10_37482&search_date=16112026&expected_price_uuid=01a1e5d1-7f5a-8030-2f53-9bbe423e5e3b&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=NheCKDi0daqn-eHevn1czw&expected_price_source=share&expected_price_currency=eur&expected_price=413"
+   },
+   "by_airline": {
+    "PC": {
+     "price": 413,
+     "flight_number": "1022",
+     "transfers": 2
+    }
+   }
+  },
+  "2027-01-02": {
+   "min": {
+    "price": 558,
+    "airline": "VF",
+    "flight_number": "42",
+    "transfers": 2,
+    "link": "/search/MUC0201SHA1?t=D717988972001799108400003100MUCSAWKULPVG_70ff0cfcb98c0af8d9efaddf631cbab3_50618&search_date=16112026&expected_price_uuid=01a1e318-47fa-8031-6c72-3e3a1fbe759f&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=USo8yvOw8Zb53_zN8CS4Nw&expected_price_source=share&expected_price_currency=eur&expected_price=558"
+   },
+   "by_airline": {
+    "VF": {
+     "price": 558,
+     "flight_number": "42",
+     "transfers": 2
+    }
+   }
+  },
+  "2027-03-01": {
+   "min": {
+    "price": 483,
+    "airline": "VN",
+    "flight_number": "34",
+    "transfers": 1,
+    "link": "/search/MUC0103SHA1?t=VN18039036001803996900001135MUCHANPVG_feb3c22d624be3d55ebd6d838d50259b_43818&search_date=16112026&expected_price_uuid=01a1e561-493f-8030-e35f-5c2324eb8ca3&static_fare_key=TY%7CP0%7CH1%7CL1_1_23%7CCH0%7CR0%7CTBC1&itinerary_key=_B6TQ4Xqj9qWzVXOc4GUiA&expected_price_source=share&expected_price_currency=eur&expected_price=483"
+   },
+   "by_airline": {
+    "VN": {
+     "price": 483,
+     "flight_number": "34",
+     "transfers": 1
+    }
+   }
+  }
+ }
+}
