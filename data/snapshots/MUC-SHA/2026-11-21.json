@@ -1,6 +1,6 @@
 {
  "route_id": "MUC-SHA",
- "fetched_at": "2026-11-21T14:45+00:00",
+ "fetched_at": "2026-11-21T23:15+00:00",
  "currency": "EUR",
  "source": "travelpayouts-cache",
  "dates": {
@@ -150,15 +150,15 @@
   },
   "2026-12-14": {
    "min": {
-    "price": 437,
+    "price": 426,
     "airline": "VF",
     "flight_number": "42",
     "transfers": 3,
-    "link": "/search/MUC1412SHA1?t=VF17972556001797365700001415MUCSAWBSZURCSHA_23d30d3b294ebc29562dea71625d609d_39924&search_date=14112026&expected_price_uuid=01a1db27-29a2-8031-2c19-22e658fbd503&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=jTtnbX7xbooccisWSWHlMQ&expected_price_source=share&expected_price_currency=eur&expected_price=437"
+    "link": "/search/MUC1412SHA1?t=VF17972556001797365700001415MUCSAWBSZURCSHA_23d30d3b294ebc29562dea71625d609d_38654&search_date=16112026&expected_price_uuid=01a1e691-1cf8-8040-20bb-fd49f892da12&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=jTtnbX7xbooccisWSWHlMQ&expected_price_source=share&expected_price_currency=eur&expected_price=426"
    },
    "by_airline": {
     "VF": {
-     "price": 437,
+     "price": 426,
      "flight_number": "42",
      "transfers": 3
     }
@@ -246,16 +246,16 @@
   },
   "2026-12-21": {
    "min": {
-    "price": 533,
+    "price": 537,
     "airline": "PC",
-    "flight_number": "1022",
+    "flight_number": "1026",
     "transfers": 3,
-    "link": "/search/MUC2112SHA1?t=PC17978640001797970500001355MUCSAWBSZURCSHA_c71639591bf2314112378a0e0d47ef82_48525&search_date=16112026&expected_price_uuid=01a1e1c8-0784-8030-a222-507399b88a23&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=p_C2nG7W8lVgUVE2brw6hw&expected_price_source=share&expected_price_currency=eur&expected_price=533"
+    "link": "/search/MUC2112SHA1?t=PC17978442001797970500001685MUCSAWBSZURCSHA_eab35120a5b00f33c5da9c73d1aaee43_48338&search_date=21112026&expected_price_uuid=01a1ff17-8622-8030-2770-e8615ad35138&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=7PMi__5ftn7rwzJsNL348Q&expected_price_source=share&expected_price_currency=eur&expected_price=537"
    },
    "by_airline": {
     "PC": {
-     "price": 533,
-     "flight_number": "1022",
+     "price": 537,
+     "flight_number": "1026",
      "transfers": 3
     }
    }
