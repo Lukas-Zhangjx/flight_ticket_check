@@ -1,6 +1,6 @@
 {
  "route_id": "SHA-MUC",
- "fetched_at": "2026-11-24T03:57+00:00",
+ "fetched_at": "2026-11-24T17:54+00:00",
  "currency": "EUR",
  "source": "travelpayouts-cache",
  "dates": {
@@ -20,19 +20,19 @@
     }
    }
   },
-  "2026-11-24": {
+  "2026-12-13": {
    "min": {
-    "price": 425,
-    "airline": "TG",
-    "flight_number": "665",
-    "transfers": 1,
-    "link": "/search/SHA2411MUC1?t=TG17955405001795589100001230PVGBKKMUC_3b874867ab82b5554ee0a744a760d9b0_38464&search_date=18112026&expected_price_uuid=01a1ee94-3e29-8030-2cae-2e41a6867c6d&static_fare_key=TY%7CP1%7CH1%7CL1_1_23%7CCH0%7CR0%7CTBC1&itinerary_key=fspQmMprOkp0wuXMQaFTvA&expected_price_source=share&expected_price_currency=eur&expected_price=425"
+    "price": 295,
+    "airline": "D7",
+    "flight_number": "331",
+    "transfers": 2,
+    "link": "/search/SHA1312MUC1?t=D717971257001797252000002525PVGKULSAWMUC_4811054d8e94475726b7977025fb5fc6_26481&search_date=24112026&expected_price_uuid=01a20cf5-1adb-8030-a5cc-4e66341c47be&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=DKKBvr3f3VkFuKwXDyn86A&expected_price_source=share&expected_price_currency=eur&expected_price=295"
    },
    "by_airline": {
-    "TG": {
-     "price": 425,
-     "flight_number": "665",
-     "transfers": 1
+    "D7": {
+     "price": 295,
+     "flight_number": "331",
+     "transfers": 2
     }
    }
   },
@@ -64,6 +64,22 @@
     "D7": {
      "price": 324,
      "flight_number": "331",
+     "transfers": 2
+    }
+   }
+  },
+  "2026-12-04": {
+   "min": {
+    "price": 348,
+    "airline": "9C",
+    "flight_number": "7677",
+    "transfers": 2,
+    "link": "/search/SHA0412MUC1?t=WY17963802001796497200002370PVGSINMCTMUC_d781104de03277e020fa425c3b912ede_31361&search_date=24112026&expected_price_uuid=01a20e78-7589-8031-6ae1-3c1fb5c1894f&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=gb0HyBLL69tnDAR7tVHj5Q&expected_price_source=share&expected_price_currency=eur&expected_price=348"
+   },
+   "by_airline": {
+    "9C": {
+     "price": 348,
+     "flight_number": "7677",
      "transfers": 2
     }
    }
