@@ -1,6 +1,6 @@
 {
  "route_id": "MUC-SHA",
- "fetched_at": "2026-11-25T02:28+00:00",
+ "fetched_at": "2026-11-25T17:20+00:00",
  "currency": "EUR",
  "source": "travelpayouts-cache",
  "dates": {
@@ -32,6 +32,22 @@
     "VF": {
      "price": 371,
      "flight_number": "42",
+     "transfers": 3
+    }
+   }
+  },
+  "2026-12-06": {
+   "min": {
+    "price": 397,
+    "airline": "PC",
+    "flight_number": "1020",
+    "transfers": 3,
+    "link": "/search/MUC0612SHA1?t=PC17965539001796674500001590MUCSAWBSZURCSHA_44f3e3c7d8cc1833057dc064aba2c87d_35924&search_date=25112026&expected_price_uuid=01a21386-b034-8030-ae1c-1c5e8e4d21b9&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=r8xFNveDRFZEfCHvL0rG2Q&expected_price_source=share&expected_price_currency=eur&expected_price=397"
+   },
+   "by_airline": {
+    "PC": {
+     "price": 397,
+     "flight_number": "1020",
      "transfers": 3
     }
    }
@@ -68,22 +84,6 @@
     }
    }
   },
-  "2026-12-06": {
-   "min": {
-    "price": 402,
-    "airline": "PC",
-    "flight_number": "1020",
-    "transfers": 3,
-    "link": "/search/MUC0612SHA1?t=PC17965539001796674500001590MUCSAWBSZURCSHA_722c785bf7eb899b348c13b8fedb72b9_35926&search_date=23112026&expected_price_uuid=01a209d6-2a19-8030-20b3-f4ca554053be&static_fare_key=TY%7CP0%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=-jt1N_0HoNCKJghuixePvw&expected_price_source=share&expected_price_currency=eur&expected_price=402"
-   },
-   "by_airline": {
-    "PC": {
-     "price": 402,
-     "flight_number": "1020",
-     "transfers": 3
-    }
-   }
-  },
   "2026-12-09": {
    "min": {
     "price": 414,
@@ -100,33 +100,49 @@
     }
    }
   },
-  "2026-12-19": {
+  "2026-12-18": {
    "min": {
-    "price": 503,
+    "price": 528,
     "airline": "PC",
-    "flight_number": "1026",
+    "flight_number": "1022",
     "transfers": 3,
-    "link": "/search/MUC1912SHA1?t=PC17976720001797797700001675MUCSAWBSZURCSHA_5017a9c0fddd6b7b5bf9de994a84bcb2_45242&search_date=19112026&expected_price_uuid=01a1f490-85b0-8031-6028-3aa7c1fc9312&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=qFETtKMiRJbUNcVzsIiAKg&expected_price_source=share&expected_price_currency=eur&expected_price=503"
+    "link": "/search/MUC1812SHA1?t=PC17976048001797797700002795MUCSAWBSZURCSHA_c0d74f8c3acfac1d19267db95393fcdc_47407&search_date=25112026&expected_price_uuid=01a21157-8f2f-8031-276b-3764a3aeb721&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=3Q9q543PyiLAp7YinaBJlQ&expected_price_source=share&expected_price_currency=eur&expected_price=528"
    },
    "by_airline": {
     "PC": {
-     "price": 503,
-     "flight_number": "1026",
+     "price": 528,
+     "flight_number": "1022",
      "transfers": 3
     }
    }
   },
-  "2026-12-18": {
+  "2026-12-19": {
    "min": {
-    "price": 527,
+    "price": 528,
     "airline": "PC",
-    "flight_number": "1022",
+    "flight_number": "1020",
     "transfers": 3,
-    "link": "/search/MUC1812SHA1?t=PC17976048001797797700002795MUCSAWBSZURCSHA_c0d74f8c3acfac1d19267db95393fcdc_47483&search_date=19112026&expected_price_uuid=01a1f490-63bb-8030-2426-91e978f9ed93&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=3Q9q543PyiLAp7YinaBJlQ&expected_price_source=share&expected_price_currency=eur&expected_price=527"
+    "link": "/search/MUC1912SHA1?t=PC17976771001797797700001590MUCSAWBSZURCSHA_b079ada7c22150893ae2e504482007d3_47407&search_date=25112026&expected_price_uuid=01a21157-8f2f-8030-21b9-2fc00078de10&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=-jt1N_0HoNCKJghuixePvw&expected_price_source=share&expected_price_currency=eur&expected_price=528"
    },
    "by_airline": {
     "PC": {
-     "price": 527,
+     "price": 528,
+     "flight_number": "1020",
+     "transfers": 3
+    }
+   }
+  },
+  "2026-12-20": {
+   "min": {
+    "price": 549,
+    "airline": "PC",
+    "flight_number": "1022",
+    "transfers": 3,
+    "link": "/search/MUC2012SHA1?t=PC17977776001797970500002795MUCSAWBSZURCSHA_1caab379c7fcc0c6e53fc70df022e5f7_49310&search_date=25112026&expected_price_uuid=01a21157-8f2f-8031-2f6b-dbc6ba557211&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=nbC9AbiO5YwUROe_qRnfqQ&expected_price_source=share&expected_price_currency=eur&expected_price=549"
+   },
+   "by_airline": {
+    "PC": {
+     "price": 549,
      "flight_number": "1022",
      "transfers": 3
     }
@@ -134,16 +150,32 @@
   },
   "2026-12-21": {
    "min": {
-    "price": 537,
+    "price": 550,
     "airline": "PC",
-    "flight_number": "1026",
+    "flight_number": "1022",
     "transfers": 3,
-    "link": "/search/MUC2112SHA1?t=PC17978442001797970500001685MUCSAWBSZURCSHA_eab35120a5b00f33c5da9c73d1aaee43_48338&search_date=21112026&expected_price_uuid=01a1ff17-8622-8030-2770-e8615ad35138&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=7PMi__5ftn7rwzJsNL348Q&expected_price_source=share&expected_price_currency=eur&expected_price=537"
+    "link": "/search/MUC2112SHA1?t=PC17978640001797970500001355MUCSAWBSZURCSHA_c71639591bf2314112378a0e0d47ef82_49326&search_date=25112026&expected_price_uuid=01a21157-8f2f-8031-6af9-14341f078cd0&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=p_C2nG7W8lVgUVE2brw6hw&expected_price_source=share&expected_price_currency=eur&expected_price=550"
    },
    "by_airline": {
     "PC": {
-     "price": 537,
-     "flight_number": "1026",
+     "price": 550,
+     "flight_number": "1022",
+     "transfers": 3
+    }
+   }
+  },
+  "2026-12-22": {
+   "min": {
+    "price": 550,
+    "airline": "PC",
+    "flight_number": "1020",
+    "transfers": 3,
+    "link": "/search/MUC2212SHA1?t=PC17979351001798056900001610MUCSAWBSZURCSHA_4747d8c4b1d80a3f4846003343a39e51_49326&search_date=25112026&expected_price_uuid=01a21157-8f2f-8031-6912-0cbb102de404&static_fare_key=TY%7CP1%7CH0%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=li6HyIyS2zidpb-ZAMlayw&expected_price_source=share&expected_price_currency=eur&expected_price=550"
+   },
+   "by_airline": {
+    "PC": {
+     "price": 550,
+     "flight_number": "1020",
      "transfers": 3
     }
    }
