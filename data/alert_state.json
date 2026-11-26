@@ -24,7 +24,7 @@
    "2026-12-11": 397,
    "2026-12-14": 426,
    "2026-12-15": 409,
-   "2026-12-18": 527,
+   "2026-12-18": 526,
    "2026-12-22": 520,
    "2026-12-23": 554,
    "2026-12-24": 573,
@@ -34,7 +34,7 @@
    "2026-11-25": 412,
    "2026-12-05": 395,
    "2027-03-01": 483,
-   "2026-12-06": 397,
+   "2026-12-06": 396,
    "2026-12-17": 479,
    "2026-12-26": 532,
    "2026-12-02": 401,
@@ -43,7 +43,7 @@
    "2027-02-08": 447,
    "2027-01-01": 516,
    "2027-01-05": 411,
-   "2026-12-20": 549
+   "2026-12-20": 548
   },
   "SHA-MUC": {
    "2027-04-04": 340,
@@ -78,22 +78,11 @@
    "2027-02-15": 300,
    "2026-12-02": 324,
    "2026-12-04": 348,
-   "2026-12-13": 295
+   "2026-12-13": 295,
+   "2026-12-20": 364
   }
  },
  "seen_rss": [
-  "https://www.urlaubspiraten.de/hotels/europarcs-hindeloopen",
-  "https://www.urlaubspiraten.de/hotels/wave-misdroy-resort-and-spa-hotel",
-  "https://www.urlaubspiraten.de/know-how/reisenews",
-  "https://www.urlaubspiraten.de/reiseziele/portugal/azoren",
-  "https://www.urlaubspiraten.de/reiseziele/polen/polnische-ostsee",
-  "https://travel-dealz.de/ticker/488747/",
-  "https://travel-dealz.de/?post_type=deal&p=261074#488765",
-  "https://travel-dealz.de/ticker/488750/",
-  "https://travel-dealz.de/?post_type=deal&p=473324",
-  "https://travel-dealz.de/?post_type=deal&p=488519#488534",
-  "https://travel-dealz.de/?post_type=deal&p=472666",
-  "https://travel-dealz.de/?post_type=deal&p=461184#488709",
   "https://travel-dealz.de/ticker/431394/",
   "https://travel-dealz.de/?post_type=deal&p=488638",
   "https://travel-dealz.de/?p=8928#488695",
@@ -581,7 +570,19 @@
   "https://travelfree.info/?p=119551",
   "https://travelfree.info/?p=202872",
   "https://travelfree.info/?p=160564",
-  "https://travelfree.info/?p=163087"
+  "https://travelfree.info/?p=163087",
+  "https://www.urlaubspiraten.de/kreuzfahrten/barbados-mallorca-meinschiff1",
+  "https://www.urlaubspiraten.de/pauschalreisen/black-friday-bei-voyage-prive",
+  "https://www.urlaubspiraten.de/kreuzfahrten/black-friday-bei-aida-karibik",
+  "https://www.urlaubspiraten.de/hotels/essense-baltic-resort-spa-polnische-ostsee",
+  "https://www.fly4free.com/?p=782424",
+  "https://www.fly4free.com/?p=782211",
+  "https://www.fly4free.com/?p=782373",
+  "https://www.fly4free.com/?p=782383",
+  "https://travelfree.info/?p=138393",
+  "https://travelfree.info/?p=78919",
+  "https://travelfree.info/?p=10513",
+  "https://travelfree.info/?p=309438"
  ],
  "seen_feeds": [
   "https://www.urlaubspiraten.de/feed",
