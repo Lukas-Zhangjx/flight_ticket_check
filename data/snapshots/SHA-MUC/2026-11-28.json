@@ -1,6 +1,6 @@
 {
  "route_id": "SHA-MUC",
- "fetched_at": "2026-11-28T01:27+00:00",
+ "fetched_at": "2026-11-28T15:38+00:00",
  "currency": "EUR",
  "source": "travelpayouts-cache",
  "dates": {
@@ -96,22 +96,6 @@
     "CA": {
      "price": 364,
      "flight_number": "1550",
-     "transfers": 2
-    }
-   }
-  },
-  "2026-12-01": {
-   "min": {
-    "price": 396,
-    "airline": "HO",
-    "flight_number": "1317",
-    "transfers": 2,
-    "link": "/search/SHA0112MUC1?t=EY17961171001796191200001655PVGHANAUHMUC_32f61897eb6439e2d6d43da3766b3f63_35679&search_date=21112026&expected_price_uuid=01a1fd4b-a4b3-8030-6027-5dd55a99f308&static_fare_key=TY%7CP0%7CH1%7CL0%7CCH0%7CR0%7CTBC0&itinerary_key=4UoRN-a6godQBOi0upj1tg&expected_price_source=share&expected_price_currency=eur&expected_price=396"
-   },
-   "by_airline": {
-    "HO": {
-     "price": 396,
-     "flight_number": "1317",
      "transfers": 2
     }
    }
